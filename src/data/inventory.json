@@ -1,6 +1,6 @@
 {
   "settings": {
-    "filament_cost_per_kg": 25,
+    "filament_cost_per_kg": 30,
     "electricity_rate_per_hour": 0.50,
     "admin_password": "3dprint2025"
   },

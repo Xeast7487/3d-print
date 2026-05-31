@@ -146,9 +146,6 @@ const categories = [...new Set(prints.map(p => p.category))];
                 <span class="color-name">{f.name}</span>
                 <span class="color-mat">{f.material}</span>
               </div>
-              <div class={`color-stock ${f.amount_g < 200 ? 'stock-low' : 'stock-ok'}`}>
-                {f.amount_g < 200 ? '⚠ Stock limité' : '✓ En stock'}
-              </div>
             </div>
           ))}
         </div>
