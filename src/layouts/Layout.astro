@@ -11,53 +11,66 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
   <title>{title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style is:global>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
+      --primary:      #4F46E5;
+      --primary-dark: #4338CA;
+      --primary-glow: rgba(79,70,229,0.14);
+      --secondary:    #10B981;
+      --amber:        #F59E0B;
+      --bg:           #FFFFFF;
+      --bg-alt:       #F8FAFC;
+      --bg-section:   #F0F4FF;
+      --text:         #0F172A;
+      --text-muted:   #64748B;
+      --border:       #E2E8F0;
+      --dark:         #0F172A;
+      --dark-2:       #1E293B;
+      /* Compatibility aliases — used by admin page */
       --accent:      #F97316;
       --accent-dark: #EA6700;
       --accent-glow: rgba(249,115,22,0.15);
-      --bg:          #0A0A0A;
       --bg-2:        #111111;
       --bg-3:        #1A1A1A;
-      --border:      rgba(255,255,255,0.08);
       --white:       #F5F5F5;
       --gray:        rgba(245,245,245,0.5);
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--white); min-height: 100vh; overflow-x: hidden; }
+    body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
     img { max-width: 100%; display: block; object-fit: cover; }
 
-    .reveal       { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-    .reveal-scale { opacity: 0; transform: scale(0.94); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal-scale.visible { opacity: 1; transform: none; }
-    .delay-1 { transition-delay: 0.1s; }
-    .delay-2 { transition-delay: 0.2s; }
-    .delay-3 { transition-delay: 0.3s; }
-    .delay-4 { transition-delay: 0.4s; }
+    .slide-up        { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .slide-up.visible { opacity: 1; transform: none; }
+    .pop-in          { opacity: 0; transform: scale(0.93); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .pop-in.visible  { opacity: 1; transform: none; }
+    .slide-right     { opacity: 0; transform: translateX(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .slide-right.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
+    .d3 { transition-delay: 0.24s; }
+    .d4 { transition-delay: 0.32s; }
+    .d5 { transition-delay: 0.40s; }
 
-    @keyframes shimmer {
-      0%   { background-position: -300% center; }
-      100% { background-position:  300% center; }
-    }
-    .text-accent { color: var(--accent); }
-    .text-shimmer {
-      background: linear-gradient(90deg, #F97316 0%, #FBBF24 40%, #F97316 70%, #FB923C 100%);
-      background-size: 300% auto;
+    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes spinRing { to { transform: rotate(360deg); } }
+
+    .text-primary { color: var(--primary); }
+    .text-gradient {
+      background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      animation: shimmer 3.5s linear infinite;
     }
 
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+    ::-webkit-scrollbar-track { background: var(--bg-alt); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
   </style>
 </head>
 <body>
   <slot />
+
   <!-- Chat widget -->
   <div id="cw-btn" title="Nous écrire">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -65,19 +78,16 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
   </div>
 
   <div id="cw-panel">
-    <!-- Header gradient -->
     <div id="cw-head">
       <div class="cw-ava">🖨️</div>
       <div class="cw-hinfo">
-        <p class="cw-name">3D Print</p>
+        <p class="cw-name">Fab3D</p>
         <p class="cw-status"><span class="cw-dot"></span>En ligne · répond vite</p>
       </div>
       <button id="cw-close" aria-label="Fermer">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-
-    <!-- Messages -->
     <div id="cw-body">
       <div class="cw-intro">
         <div class="cw-intro-ava">🖨️</div>
@@ -86,8 +96,6 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
         </div>
       </div>
     </div>
-
-    <!-- Input -->
     <div id="cw-foot">
       <input id="cw-input" placeholder="Écris ton message..." autocomplete="off" maxlength="500" />
       <button id="cw-send" aria-label="Envoyer">
@@ -97,106 +105,93 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
   </div>
 
   <style>
-    /* ── Bouton flottant ────────────────────────────────── */
     #cw-btn {
       position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 9999;
-      width: 56px; height: 56px; border-radius: 50%;
-      background: #F97316;
+      width: 54px; height: 54px; border-radius: 14px;
+      background: var(--primary);
       color: #fff; display: flex; align-items: center; justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(249,115,22,0.5);
+      box-shadow: 0 8px 28px rgba(79,70,229,0.45);
       transition: transform 0.2s, box-shadow 0.2s;
     }
-    #cw-btn:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(249,115,22,0.65); }
+    #cw-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(79,70,229,0.55); }
     #cw-badge {
-      position: absolute; top: -2px; right: -2px;
+      position: absolute; top: -4px; right: -4px;
       background: #ef4444; color: #fff;
       min-width: 18px; height: 18px; border-radius: 9px; padding: 0 4px;
       font-size: 10px; font-weight: 700;
       display: none; align-items: center; justify-content: center;
-      border: 2px solid #111; font-family: sans-serif;
+      border: 2px solid #fff; font-family: sans-serif;
     }
 
-    /* ── Panel ─────────────────────────────────────────── */
     #cw-panel {
       position: fixed; bottom: 5.5rem; right: 1.75rem; z-index: 9998;
       width: 360px; max-height: 540px;
       display: flex; flex-direction: column;
-      background: #141414;
+      background: #fff;
       border-radius: 20px; overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06);
-      font-family: -apple-system, 'Space Grotesk', sans-serif;
+      box-shadow: 0 24px 64px rgba(15,23,42,0.14), 0 0 0 1px rgba(15,23,42,0.06);
+      font-family: 'Manrope', -apple-system, sans-serif;
       opacity: 0; pointer-events: none;
-      transform: translateY(16px) scale(0.96);
+      transform: translateY(14px) scale(0.97);
       transition: opacity 0.22s cubic-bezier(0.22,1,0.36,1), transform 0.22s cubic-bezier(0.22,1,0.36,1);
     }
     #cw-panel.open { opacity: 1; pointer-events: all; transform: none; }
 
-    /* ── Header ─────────────────────────────────────────── */
     #cw-head {
       flex-shrink: 0;
       display: flex; align-items: center; gap: 0.75rem;
       padding: 1.1rem 1.25rem 1rem;
-      background: linear-gradient(160deg, #1f1208 0%, #1a1208 100%);
-      border-bottom: 1px solid rgba(249,115,22,0.12);
+      background: var(--primary);
     }
     .cw-ava {
-      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, #F97316, #EA580C);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; box-shadow: 0 2px 8px rgba(249,115,22,0.4);
+      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+      background: rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
     }
     .cw-hinfo { flex: 1; min-width: 0; }
-    .cw-name  { font-size: 0.9rem; font-weight: 700; color: #f5f5f5; letter-spacing: -0.01em; }
-    .cw-status { display: flex; align-items: center; gap: 0.3rem; margin-top: 2px; }
-    .cw-dot   { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 2px rgba(74,222,128,0.2); flex-shrink: 0; animation: cwBlink 2.5s ease infinite; }
-    .cw-status span:last-child { font-size: 0.7rem; color: rgba(245,245,245,0.45); font-weight: 400; }
-    @keyframes cwBlink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    .cw-name  { font-size: 0.88rem; font-weight: 700; color: #fff; }
+    .cw-status { display: flex; align-items: center; gap: 0.3rem; margin-top: 2px; font-size: 0.68rem; color: rgba(255,255,255,0.72); }
+    .cw-dot   { width: 6px; height: 6px; border-radius: 50%; background: #86efac; flex-shrink: 0; }
     #cw-close {
-      background: rgba(255,255,255,0.07); border: none; cursor: pointer;
-      width: 28px; height: 28px; border-radius: 50%;
-      color: rgba(245,245,245,0.5); display: flex; align-items: center; justify-content: center;
-      transition: background 0.15s, color 0.15s; flex-shrink: 0;
+      background: rgba(255,255,255,0.14); border: none; cursor: pointer;
+      width: 28px; height: 28px; border-radius: 8px;
+      color: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; flex-shrink: 0;
     }
-    #cw-close:hover { background: rgba(255,255,255,0.12); color: #f5f5f5; }
+    #cw-close:hover { background: rgba(255,255,255,0.25); color: #fff; }
 
-    /* ── Corps messages ──────────────────────────────────── */
     #cw-body {
       flex: 1; overflow-y: auto; overflow-x: hidden;
       padding: 1rem 1rem 0.5rem;
-      display: flex; flex-direction: column; gap: 0.35rem;
-      min-height: 0;
+      background: #F8FAFC;
+      display: flex; flex-direction: column; gap: 0.35rem; min-height: 0;
     }
     #cw-body::-webkit-scrollbar { width: 0; }
 
-    /* Message d'intro owner */
     .cw-intro { display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.25rem; }
     .cw-intro-ava {
-      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, #F97316, #EA580C);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem;
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      background: var(--primary);
+      display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
     }
     .cw-intro-bubble {
-      background: #222; border-radius: 18px 18px 18px 4px;
+      background: #fff; border-radius: 4px 14px 14px 14px;
       padding: 0.65rem 0.9rem; max-width: 82%;
-      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 2px 8px rgba(15,23,42,0.08);
     }
-    .cw-intro-bubble p { font-size: 0.84rem; color: #e5e5e5; line-height: 1.55; margin: 0; }
+    .cw-intro-bubble p { font-size: 0.84rem; color: #374151; line-height: 1.55; margin: 0; }
 
-    /* Groupes de messages */
     .cw-grp { display: flex; flex-direction: column; gap: 2px; margin-bottom: 0.5rem; }
     .cw-grp.me  { align-items: flex-end; }
     .cw-grp.you { align-items: flex-start; flex-direction: row; align-items: flex-end; gap: 0.5rem; }
     .cw-grp.you .cw-msgs { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
     .cw-grp-ava {
-      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, #F97316, #EA580C);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.72rem; align-self: flex-end;
+      width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+      background: var(--primary);
+      display: flex; align-items: center; justify-content: center; font-size: 0.72rem; align-self: flex-end;
     }
 
-    /* Bulles */
     .cw-b {
       max-width: 78%; padding: 0.6rem 0.9rem;
       font-size: 0.845rem; line-height: 1.5; word-break: break-word;
@@ -204,76 +199,67 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
     }
     @keyframes cwPop { from { opacity:0; transform: translateY(6px) scale(0.95); } to { opacity:1; transform: none; } }
 
-    /* Moi (visiteur) — orange */
     .cw-grp.me .cw-b {
-      background: #F97316; color: #fff;
-      border-radius: 18px 18px 4px 18px;
+      background: var(--primary); color: #fff;
+      border-radius: 14px 14px 4px 14px;
+      box-shadow: 0 3px 10px rgba(79,70,229,0.28);
     }
-    .cw-grp.me .cw-b:first-child { border-radius: 18px 18px 4px 18px; }
-    .cw-grp.me .cw-b:not(:first-child) { border-radius: 18px 4px 4px 18px; }
-    .cw-grp.me .cw-b:last-child  { border-radius: 18px 4px 18px 18px; }
+    .cw-grp.me .cw-b:not(:first-child) { border-radius: 14px 4px 4px 14px; }
+    .cw-grp.me .cw-b:last-child        { border-radius: 14px 4px 14px 14px; }
 
-    /* Owner — sombre */
     .cw-grp.you .cw-b {
-      background: #222; color: #e5e5e5;
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 18px 18px 18px 4px;
+      background: #fff; color: #374151;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.08);
+      border-radius: 4px 14px 14px 14px;
     }
-    .cw-grp.you .cw-b:not(:last-child) { border-radius: 18px 18px 4px 4px; }
-    .cw-grp.you .cw-b:last-child  { border-radius: 4px 18px 18px 4px; }
+    .cw-grp.you .cw-b:not(:last-child) { border-radius: 4px 14px 4px 4px; }
+    .cw-grp.you .cw-b:last-child        { border-radius: 4px 14px 14px 14px; }
 
-    /* Meta (heure) */
-    .cw-meta { font-size: 0.62rem; color: rgba(245,245,245,0.2); margin-top: 3px; padding: 0 3px; }
+    .cw-meta { font-size: 0.62rem; color: #9CA3AF; margin-top: 3px; padding: 0 3px; }
     .cw-grp.me  .cw-meta { text-align: right; }
     .cw-grp.you .cw-meta { text-align: left; padding-left: 0.5rem; }
 
-    /* Typing */
     .cw-typing { display: flex; align-items: flex-end; gap: 0.5rem; }
     .cw-typing-ava {
-      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, #F97316, #EA580C);
+      width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+      background: var(--primary);
       display: flex; align-items: center; justify-content: center; font-size: 0.72rem;
     }
     .cw-typing-b {
-      background: #222; border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 18px 18px 18px 4px;
+      background: #fff; box-shadow: 0 2px 8px rgba(15,23,42,0.08);
+      border-radius: 4px 14px 14px 14px;
       padding: 0.7rem 0.9rem; display: flex; gap: 4px; align-items: center;
     }
     .cw-typing-b span {
-      width: 6px; height: 6px; border-radius: 50%; background: rgba(245,245,245,0.35);
-      animation: cwDot 1.4s ease infinite;
-      display: block;
+      width: 6px; height: 6px; border-radius: 50%; background: #CBD5E1;
+      animation: cwDot 1.4s ease infinite; display: block;
     }
     .cw-typing-b span:nth-child(2) { animation-delay: 0.2s; }
     .cw-typing-b span:nth-child(3) { animation-delay: 0.4s; }
     @keyframes cwDot { 0%,60%,100%{transform:scale(0.7);opacity:0.35} 30%{transform:scale(1.1);opacity:1} }
 
-    /* ── Input ──────────────────────────────────────────── */
     #cw-foot {
-      flex-shrink: 0;
-      display: flex; align-items: center; gap: 0.5rem;
-      padding: 0.75rem;
-      background: #0e0e0e;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem; background: #fff; border-top: 1px solid #F1F5F9;
     }
     #cw-input {
-      flex: 1; background: #1e1e1e;
-      border: 1px solid rgba(255,255,255,0.09);
-      color: #f0f0f0; border-radius: 12px;
+      flex: 1; background: #F1F5F9;
+      border: 1.5px solid transparent;
+      color: #0F172A; border-radius: 10px;
       padding: 0.6rem 0.9rem; font-size: 0.84rem;
       outline: none; font-family: inherit;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, background 0.2s;
     }
-    #cw-input:focus { border-color: rgba(249,115,22,0.45); }
-    #cw-input::placeholder { color: rgba(240,240,240,0.25); }
+    #cw-input:focus { border-color: var(--primary); background: #fff; }
+    #cw-input::placeholder { color: #94A3B8; }
     #cw-send {
       width: 36px; height: 36px; flex-shrink: 0;
-      background: #F97316; border: none; border-radius: 10px;
+      background: var(--primary); border: none; border-radius: 10px;
       color: #fff; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.15s, transform 0.1s;
     }
-    #cw-send:hover  { background: #ea6700; }
+    #cw-send:hover  { background: var(--primary-dark); }
     #cw-send:active { transform: scale(0.93); }
 
     @media (max-width: 480px) {
@@ -301,7 +287,6 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
     let lastTs       = localStorage.getItem('chat_3dp_ts') || new Date(0).toISOString();
     let typingEl     = null;
 
-    // ── Toggle ──────────────────────────────────────────────────
     cwBtn.addEventListener('click', () => {
       isOpen = !isOpen;
       cwPanel.classList.toggle('open', isOpen);
@@ -312,7 +297,6 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
     });
     cwClose.addEventListener('click', () => { isOpen = false; cwPanel.classList.remove('open'); stopPoll(); });
 
-    // ── Supabase REST helper ─────────────────────────────────────
     async function sbApi(path, opts = {}) {
       const r = await fetch(`${SB_URL}/rest/v1/${path}`, {
         headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=representation', ...opts.headers },
@@ -322,7 +306,6 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
       return t ? JSON.parse(t) : null;
     }
 
-    // ── Session ──────────────────────────────────────────────────
     async function getSession() {
       if (sessionId) return sessionId;
       const d = await sbApi('chat_sessions', { method: 'POST', body: JSON.stringify({ site: '3d-print', visitor_name: 'Visiteur' }) });
@@ -333,8 +316,6 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
 
     function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-    // ── Render messages ─────────────────────────────────────────
-    // On regroupe les messages consécutifs du même expéditeur
     function renderMsg(msg, animate = true) {
       if (document.querySelector(`[data-mid="${msg.id}"]`)) return;
       const isMe = msg.sender === 'visitor';
@@ -342,38 +323,25 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
       const time  = new Date(msg.created_at).toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' });
       const anim  = animate ? '' : 'style="animation:none"';
 
-      // Cherche si le dernier groupe est du même côté
-      const lastGrp = cwBody.querySelector(`.cw-grp.${side}:last-child`);
-      // On regroupe si le dernier groupe existant est du même côté
-      const prevGroup = cwBody.lastElementChild?.classList.contains(`cw-grp`) && cwBody.lastElementChild?.classList.contains(side)
+      const prevGroup = cwBody.lastElementChild?.classList.contains('cw-grp') && cwBody.lastElementChild?.classList.contains(side)
         ? cwBody.lastElementChild : null;
 
       if (prevGroup) {
-        // Ajoute la bulle dans le groupe existant
         const msgsContainer = prevGroup.querySelector('.cw-msgs') || prevGroup;
         const bubble = document.createElement('div');
         bubble.className = 'cw-b'; bubble.dataset.mid = msg.id;
         bubble.setAttribute('style', animate ? '' : 'animation:none');
         bubble.textContent = msg.message;
         msgsContainer.appendChild(bubble);
-        // Met à jour l'heure sur le groupe
         const metaEl = prevGroup.querySelector('.cw-meta');
         if (metaEl) metaEl.textContent = time;
       } else {
-        // Nouveau groupe
         const grp = document.createElement('div');
         grp.className = `cw-grp ${side}`;
         if (isMe) {
-          grp.innerHTML = `
-            <div class="cw-b" data-mid="${msg.id}" ${anim}>${escHtml(msg.message)}</div>
-            <span class="cw-meta">${time}</span>`;
+          grp.innerHTML = `<div class="cw-b" data-mid="${msg.id}" ${anim}>${escHtml(msg.message)}</div><span class="cw-meta">${time}</span>`;
         } else {
-          grp.innerHTML = `
-            <div class="cw-grp-ava">🖨️</div>
-            <div class="cw-msgs">
-              <div class="cw-b" data-mid="${msg.id}" ${anim}>${escHtml(msg.message)}</div>
-              <span class="cw-meta">${time}</span>
-            </div>`;
+          grp.innerHTML = `<div class="cw-grp-ava">🖨️</div><div class="cw-msgs"><div class="cw-b" data-mid="${msg.id}" ${anim}>${escHtml(msg.message)}</div><span class="cw-meta">${time}</span></div>`;
         }
         cwBody.appendChild(grp);
       }
@@ -393,7 +361,6 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
     }
     function hideTyping() { typingEl?.remove(); typingEl = null; }
 
-    // ── Load all messages ────────────────────────────────────────
     async function loadMessages() {
       if (!sessionId) return;
       const msgs = await sbApi(`chat_messages?session_id=eq.${sessionId}&order=created_at.asc`);
@@ -401,7 +368,6 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
       msgs.forEach(m => renderMsg(m, false));
     }
 
-    // ── Poll new messages ────────────────────────────────────────
     async function poll() {
       if (!sessionId) return;
       try {
@@ -419,7 +385,6 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
     function startPoll() { if (!pollTimer) pollTimer = setInterval(poll, 4000); }
     function stopPoll()  { clearInterval(pollTimer); pollTimer = null; }
 
-    // ── Send ─────────────────────────────────────────────────────
     async function doSend() {
       const text = cwInput.value.trim();
       if (!text) return;
@@ -428,8 +393,7 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
       try {
         const d = await sbApi('chat_messages', { method: 'POST', body: JSON.stringify({ session_id: sid, sender: 'visitor', message: text }) });
         if (d?.[0]) renderMsg(d[0], true);
-        showTyping();
-        startPoll();
+        showTyping(); startPoll();
       } catch { console.error('Send failed'); }
       cwInput.disabled = false; cwInput.focus();
     }
@@ -437,23 +401,23 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
     cwSend.addEventListener('click', doSend);
     cwInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); doSend(); } });
 
-    // Auto-load if session exists
     if (sessionId) { loadMessages(); startPoll(); }
   </script>
+
   <script>
-    document.querySelectorAll('.reveal, .reveal-scale').forEach(el =>
+    document.querySelectorAll('.slide-up, .pop-in, .slide-right').forEach(el =>
       new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')), { threshold: 0.1 }).observe(el)
     );
     document.querySelectorAll('[data-count]').forEach(el => {
       const io = new IntersectionObserver(entries => {
         entries.forEach(e => {
           if (!e.isIntersecting) return;
-          const target = +e.target.dataset.count, suffix = e.target.dataset.suffix||'';
+          const target = +e.target.dataset.count, suffix = e.target.dataset.suffix || '';
           const t0 = performance.now();
           const tick = now => {
-            const p = Math.min((now-t0)/1600, 1);
-            e.target.textContent = Math.floor(target*(1-Math.pow(1-p,3)))+suffix;
-            if (p<1) requestAnimationFrame(tick);
+            const p = Math.min((now - t0) / 1600, 1);
+            e.target.textContent = Math.floor(target * (1 - Math.pow(1 - p, 3))) + suffix;
+            if (p < 1) requestAnimationFrame(tick);
           };
           requestAnimationFrame(tick);
           io.unobserve(e.target);

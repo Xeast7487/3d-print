@@ -1,42 +1,136 @@
 ---
 ---
 <footer>
-  <div class="container">
-    <div class="footer-inner">
-      <div>
-        <a href="/" class="logo">
-          <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="rgba(249,115,22,0.15)" stroke="#F97316" stroke-width="1.5"/><text x="14" y="18" text-anchor="middle" font-family="Space Mono" font-weight="700" font-size="9" fill="#F97316">3D</text></svg>
-          <span>Print<span style="color:var(--accent)">.</span></span>
+  <div class="footer-wrap">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <a href="/" class="footer-logo">
+          <div class="fl-icon">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="#4F46E5"/>
+              <path d="M16 6L26 11.5V20.5L16 26L6 20.5V11.5L16 6Z" fill="none" stroke="white" stroke-width="1.5"/>
+              <path d="M16 6L16 26M6 11.5L26 11.5M6 20.5L26 20.5" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+              <circle cx="16" cy="16" r="3" fill="white"/>
+            </svg>
+          </div>
+          <span class="fl-name">Fab<span>3D</span></span>
         </a>
-        <p>Impressions 3D sur commande.<br/>Qualité professionnelle.</p>
+        <p class="footer-tagline">Impressions 3D personnalisées.<br />De l'idée à la pièce finie.</p>
+        <div class="footer-badges">
+          <span>PLA · PETG</span>
+          <span>Délai 2-5 jours</span>
+        </div>
       </div>
-      <div class="footer-links">
-        <a href="#galerie">Galerie</a>
-        <a href="#comment">Comment ça marche</a>
-        <a href="#couleurs">Couleurs dispo</a>
-        <a href="#contact">Commander</a>
-        <a href="/admin">Admin</a>
-        <button id="ft-chat-btn" class="ft-chat-link">💬 Ouvrir le chat</button>
+
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#catalogue">Catalogue</a></li>
+          <li><a href="#processus">Comment ça marche</a></li>
+          <li><a href="#materiaux">Matériaux dispo</a></li>
+          <li><a href="#contact">Faire une commande</a></li>
+          <li><a href="/admin">Administration</a></li>
+        </ul>
       </div>
+
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li>
+            <button id="ft-chat-btn" class="chat-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Ouvrir le chat
+            </button>
+          </li>
+          <li><span class="footer-note">Réponse rapide garantie</span></li>
+        </ul>
+      </div>
+
     </div>
+
     <div class="footer-bottom">
-      <p>&copy; {new Date().getFullYear()} Print. — Tous droits réservés</p>
+      <p>&copy; {new Date().getFullYear()} Fab3D — Tous droits réservés</p>
+      <p class="footer-made">Fait avec passion 🖨️</p>
     </div>
   </div>
 </footer>
+
 <style>
-  footer { background: var(--bg-2); border-top: 1px solid var(--border); padding: 3rem 2rem 1.5rem; }
-  .container { max-width: 1100px; margin: 0 auto; }
-  .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .logo { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1rem; margin-bottom: 0.6rem; }
-  footer p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
-  .footer-links { display: flex; flex-direction: column; gap: 0.5rem; }
-  .footer-links a { font-size: 0.85rem; color: var(--gray); transition: color 0.2s; }
-  .footer-links a:hover { color: var(--white); }
-  .ft-chat-link { background: none; border: none; color: var(--gray); font-size: 0.85rem; cursor: pointer; padding: 0; font-family: inherit; transition: color 0.2s; }
-  .ft-chat-link:hover { color: var(--accent); }
-  .footer-bottom { padding-top: 1.25rem; }
-  .footer-bottom p { font-size: 0.75rem; color: rgba(245,245,245,0.2); }
+  footer {
+    background: var(--dark);
+    padding: 4rem 2rem 0;
+    margin-top: 0;
+  }
+  .footer-wrap { max-width: 1160px; margin: 0 auto; }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .footer-logo {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
+    color: #fff; margin-bottom: 1rem;
+  }
+  .fl-icon { display: flex; }
+  .fl-name span { color: var(--primary); }
+
+  .footer-tagline {
+    font-size: 0.875rem; color: rgba(255,255,255,0.45);
+    line-height: 1.7; margin-bottom: 1.25rem;
+  }
+  .footer-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .footer-badges span {
+    background: rgba(79,70,229,0.18); border: 1px solid rgba(79,70,229,0.3);
+    color: rgba(255,255,255,0.65); border-radius: 999px;
+    font-size: 0.7rem; font-weight: 600; padding: 0.25rem 0.75rem;
+  }
+
+  .footer-col h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin-bottom: 1.25rem;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-col li a {
+    font-size: 0.875rem; color: rgba(255,255,255,0.55);
+    transition: color 0.2s;
+  }
+  .footer-col li a:hover { color: #fff; }
+
+  .chat-link {
+    background: none; border: none; cursor: pointer; padding: 0;
+    font-family: inherit; font-size: 0.875rem;
+    color: rgba(255,255,255,0.55);
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    transition: color 0.2s;
+  }
+  .chat-link:hover { color: var(--primary); }
+  .chat-link:hover svg { stroke: var(--primary); }
+
+  .footer-note { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 0;
+  }
+  .footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.2); }
+  .footer-made { font-size: 0.78rem; color: rgba(255,255,255,0.2); }
+
+  @media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+    .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+  }
 </style>
 
 <script>
