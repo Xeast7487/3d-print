@@ -50,5 +50,18 @@
     "print_hours": 0,
     "price_range": "10$",
     "featured": false
+  },
+  {
+    "id": "pokeball-anti-stress",
+    "name": "Pokeball anti stress",
+    "description": "",
+    "category": "Utilitaires",
+    "photos": ["/prints/pokeball-anti-stress.jpg"],
+    "colors_available": [],
+    "material": "PLA",
+    "weight_g": 0,
+    "print_hours": 0,
+    "price_range": "20$",
+    "featured": false
   }
 ]
