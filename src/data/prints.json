@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "id": "masque-zelda",
+    "name": "Masque Zelda",
+    "description": "",
+    "category": "Figurines",
+    "photos": ["/prints/masque-zelda.jpg"],
+    "colors_available": [],
+    "material": "PLA",
+    "weight_g": 0,
+    "print_hours": 0,
+    "price_range": "20$",
+    "featured": false
+  },
+  {
+    "id": "pokemon-a-peinturer",
+    "name": "Pokémon à peinturer",
+    "description": "",
+    "category": "Figurines",
+    "photos": ["/prints/pokemon-a-peinturer.jpg"],
+    "colors_available": [],
+    "material": "PLA",
+    "weight_g": 0,
+    "print_hours": 0,
+    "price_range": "10$",
+    "featured": false
+  }
+]
