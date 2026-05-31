@@ -11,5 +11,44 @@
     "print_hours": 0,
     "price_range": "20$",
     "featured": false
+  },
+  {
+    "id": "pokemon-gangars-a-peinturer",
+    "name": "Pokemon Gangars a peinturer",
+    "description": "",
+    "category": "Figurines",
+    "photos": ["/prints/pokemon-gangars-a-peinturer.png"],
+    "colors_available": [],
+    "material": "PLA",
+    "weight_g": 0,
+    "print_hours": 0,
+    "price_range": "15$",
+    "featured": false
+  },
+  {
+    "id": "mini-mini-bowser",
+    "name": "Mini mini bowser",
+    "description": "",
+    "category": "Figurines",
+    "photos": ["/prints/mini-mini-bowser.png"],
+    "colors_available": [],
+    "material": "PLA",
+    "weight_g": 0,
+    "print_hours": 0,
+    "price_range": "5$",
+    "featured": false
+  },
+  {
+    "id": "signe-deadpool-a-peinturer",
+    "name": "Signe Deadpool a peinturer",
+    "description": "",
+    "category": "Déco",
+    "photos": ["/prints/signe-deadpool-a-peinturer.png"],
+    "colors_available": [],
+    "material": "PLA",
+    "weight_g": 0,
+    "print_hours": 0,
+    "price_range": "10$",
+    "featured": false
   }
 ]
