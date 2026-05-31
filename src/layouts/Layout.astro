@@ -65,135 +65,220 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
   </div>
 
   <div id="cw-panel">
+    <!-- Header gradient -->
     <div id="cw-head">
-      <div class="cw-avatar">🖨️</div>
+      <div class="cw-ava">🖨️</div>
       <div class="cw-hinfo">
         <p class="cw-name">3D Print</p>
-        <p class="cw-status"><span class="cw-dot"></span>En ligne</p>
+        <p class="cw-status"><span class="cw-dot"></span>En ligne · répond vite</p>
       </div>
-      <button id="cw-close">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <button id="cw-close" aria-label="Fermer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
+
+    <!-- Messages -->
     <div id="cw-body">
-      <div class="cw-welcome">
-        <p>👋 Bonjour ! Une question sur une impression ? Écris-nous, on répond rapidement.</p>
+      <div class="cw-intro">
+        <div class="cw-intro-ava">🖨️</div>
+        <div class="cw-intro-bubble">
+          <p>Salut ! 👋 Tu as une question sur une impression ? Je réponds rapidement.</p>
+        </div>
       </div>
     </div>
+
+    <!-- Input -->
     <div id="cw-foot">
-      <input id="cw-input" placeholder="Votre message..." autocomplete="off" maxlength="500" />
-      <button id="cw-send">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <input id="cw-input" placeholder="Écris ton message..." autocomplete="off" maxlength="500" />
+      <button id="cw-send" aria-label="Envoyer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
   </div>
 
   <style>
-    /* ── Bouton ── */
+    /* ── Bouton flottant ────────────────────────────────── */
     #cw-btn {
-      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
-      width: 58px; height: 58px; border-radius: 50%;
-      background: linear-gradient(135deg, #F97316, #FBBF24);
-      color: #0A0A0A; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; box-shadow: 0 4px 20px rgba(249,115,22,0.45), 0 0 0 0 rgba(249,115,22,0.3);
+      position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 9999;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: #F97316;
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(249,115,22,0.5);
       transition: transform 0.2s, box-shadow 0.2s;
-      animation: cwPulse 3s ease infinite;
     }
-    @keyframes cwPulse {
-      0%,100% { box-shadow: 0 4px 20px rgba(249,115,22,0.45), 0 0 0 0 rgba(249,115,22,0.25); }
-      50%      { box-shadow: 0 4px 28px rgba(249,115,22,0.6), 0 0 0 10px rgba(249,115,22,0); }
-    }
-    #cw-btn:hover { transform: scale(1.07); }
+    #cw-btn:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(249,115,22,0.65); }
     #cw-badge {
-      position: absolute; top: -3px; right: -3px;
+      position: absolute; top: -2px; right: -2px;
       background: #ef4444; color: #fff;
-      min-width: 18px; height: 18px; border-radius: 9px;
-      font-size: 10px; font-weight: 700; padding: 0 4px;
+      min-width: 18px; height: 18px; border-radius: 9px; padding: 0 4px;
+      font-size: 10px; font-weight: 700;
       display: none; align-items: center; justify-content: center;
-      border: 2px solid #0A0A0A;
+      border: 2px solid #111; font-family: sans-serif;
     }
 
-    /* ── Panel ── */
+    /* ── Panel ─────────────────────────────────────────── */
     #cw-panel {
-      position: fixed; bottom: 5.5rem; right: 1.5rem; z-index: 9998;
-      width: 350px; height: 500px;
-      background: #0f0f0f;
-      border: 1px solid rgba(249,115,22,0.2);
-      border-radius: 20px; overflow: hidden;
+      position: fixed; bottom: 5.5rem; right: 1.75rem; z-index: 9998;
+      width: 360px; max-height: 540px;
       display: flex; flex-direction: column;
-      box-shadow: 0 12px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
-      font-family: 'Space Grotesk', sans-serif;
+      background: #141414;
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06);
+      font-family: -apple-system, 'Space Grotesk', sans-serif;
       opacity: 0; pointer-events: none;
-      transform: translateY(12px) scale(0.97);
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      transform: translateY(16px) scale(0.96);
+      transition: opacity 0.22s cubic-bezier(0.22,1,0.36,1), transform 0.22s cubic-bezier(0.22,1,0.36,1);
     }
-    #cw-panel.open { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+    #cw-panel.open { opacity: 1; pointer-events: all; transform: none; }
 
-    /* ── Header ── */
+    /* ── Header ─────────────────────────────────────────── */
     #cw-head {
+      flex-shrink: 0;
       display: flex; align-items: center; gap: 0.75rem;
-      padding: 1rem 1.25rem;
-      background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(251,191,36,0.08));
-      border-bottom: 1px solid rgba(249,115,22,0.15);
+      padding: 1.1rem 1.25rem 1rem;
+      background: linear-gradient(160deg, #1f1208 0%, #1a1208 100%);
+      border-bottom: 1px solid rgba(249,115,22,0.12);
     }
-    .cw-avatar { font-size: 1.6rem; line-height: 1; }
-    .cw-hinfo { flex: 1; }
-    .cw-name { font-size: 0.9rem; font-weight: 700; color: #f0f0f0; }
-    .cw-status { display: flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; color: rgba(240,240,240,0.5); margin-top: 0.1rem; }
-    .cw-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 5px #4ade80; animation: cwBlink 2s infinite; flex-shrink: 0; }
-    @keyframes cwBlink { 0%,100%{opacity:1}50%{opacity:0.4} }
-    #cw-close { background: none; border: none; cursor: pointer; color: rgba(240,240,240,0.4); padding: 4px; border-radius: 6px; display: flex; transition: color 0.2s, background 0.2s; }
-    #cw-close:hover { color: #f0f0f0; background: rgba(255,255,255,0.06); }
-
-    /* ── Messages ── */
-    #cw-body { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
-    #cw-body::-webkit-scrollbar { width: 3px; }
-    #cw-body::-webkit-scrollbar-thumb { background: rgba(249,115,22,0.3); border-radius: 2px; }
-    .cw-welcome { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.15); border-radius: 12px; padding: 0.85rem 1rem; }
-    .cw-welcome p { font-size: 0.82rem; color: rgba(240,240,240,0.7); line-height: 1.55; }
-    .cw-row { display: flex; flex-direction: column; }
-    .cw-row.me  { align-items: flex-end; }
-    .cw-row.you { align-items: flex-start; }
-    .cw-bubble {
-      max-width: 80%; padding: 0.6rem 0.95rem; border-radius: 16px;
-      font-size: 0.83rem; line-height: 1.5; word-break: break-word;
-      animation: cwPop 0.18s ease-out both;
+    .cw-ava {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #F97316, #EA580C);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; box-shadow: 0 2px 8px rgba(249,115,22,0.4);
     }
-    @keyframes cwPop { from { opacity:0; transform: scale(0.9); } to { opacity:1; transform: none; } }
-    .cw-row.me  .cw-bubble { background: #F97316; color: #0A0A0A; font-weight: 500; border-bottom-right-radius: 4px; }
-    .cw-row.you .cw-bubble { background: #1c1c1c; color: #f0f0f0; border: 1px solid rgba(255,255,255,0.07); border-bottom-left-radius: 4px; }
-    .cw-time { font-size: 0.62rem; color: rgba(240,240,240,0.25); margin-top: 0.25rem; padding: 0 0.2rem; }
-    .cw-sender { font-size: 0.68rem; font-weight: 600; color: #F97316; margin-bottom: 0.2rem; padding: 0 0.2rem; }
+    .cw-hinfo { flex: 1; min-width: 0; }
+    .cw-name  { font-size: 0.9rem; font-weight: 700; color: #f5f5f5; letter-spacing: -0.01em; }
+    .cw-status { display: flex; align-items: center; gap: 0.3rem; margin-top: 2px; }
+    .cw-dot   { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 2px rgba(74,222,128,0.2); flex-shrink: 0; animation: cwBlink 2.5s ease infinite; }
+    .cw-status span:last-child { font-size: 0.7rem; color: rgba(245,245,245,0.45); font-weight: 400; }
+    @keyframes cwBlink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    #cw-close {
+      background: rgba(255,255,255,0.07); border: none; cursor: pointer;
+      width: 28px; height: 28px; border-radius: 50%;
+      color: rgba(245,245,245,0.5); display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s; flex-shrink: 0;
+    }
+    #cw-close:hover { background: rgba(255,255,255,0.12); color: #f5f5f5; }
 
-    /* Typing indicator */
-    .cw-typing .cw-bubble { background: #1c1c1c; border: 1px solid rgba(255,255,255,0.07); padding: 0.7rem 1rem; }
-    .cw-dots { display: flex; gap: 4px; }
-    .cw-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(240,240,240,0.4); animation: cwDot 1.2s infinite; }
-    .cw-dots span:nth-child(2) { animation-delay: 0.2s; }
-    .cw-dots span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes cwDot { 0%,80%,100%{transform:scale(0.7);opacity:0.4}40%{transform:scale(1);opacity:1} }
+    /* ── Corps messages ──────────────────────────────────── */
+    #cw-body {
+      flex: 1; overflow-y: auto; overflow-x: hidden;
+      padding: 1rem 1rem 0.5rem;
+      display: flex; flex-direction: column; gap: 0.35rem;
+      min-height: 0;
+    }
+    #cw-body::-webkit-scrollbar { width: 0; }
 
-    /* ── Footer ── */
-    #cw-foot { padding: 0.85rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 0.5rem; background: #0a0a0a; }
+    /* Message d'intro owner */
+    .cw-intro { display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.25rem; }
+    .cw-intro-ava {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #F97316, #EA580C);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+    }
+    .cw-intro-bubble {
+      background: #222; border-radius: 18px 18px 18px 4px;
+      padding: 0.65rem 0.9rem; max-width: 82%;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .cw-intro-bubble p { font-size: 0.84rem; color: #e5e5e5; line-height: 1.55; margin: 0; }
+
+    /* Groupes de messages */
+    .cw-grp { display: flex; flex-direction: column; gap: 2px; margin-bottom: 0.5rem; }
+    .cw-grp.me  { align-items: flex-end; }
+    .cw-grp.you { align-items: flex-start; flex-direction: row; align-items: flex-end; gap: 0.5rem; }
+    .cw-grp.you .cw-msgs { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
+    .cw-grp-ava {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #F97316, #EA580C);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; align-self: flex-end;
+    }
+
+    /* Bulles */
+    .cw-b {
+      max-width: 78%; padding: 0.6rem 0.9rem;
+      font-size: 0.845rem; line-height: 1.5; word-break: break-word;
+      animation: cwPop 0.16s ease-out both;
+    }
+    @keyframes cwPop { from { opacity:0; transform: translateY(6px) scale(0.95); } to { opacity:1; transform: none; } }
+
+    /* Moi (visiteur) — orange */
+    .cw-grp.me .cw-b {
+      background: #F97316; color: #fff;
+      border-radius: 18px 18px 4px 18px;
+    }
+    .cw-grp.me .cw-b:first-child { border-radius: 18px 18px 4px 18px; }
+    .cw-grp.me .cw-b:not(:first-child) { border-radius: 18px 4px 4px 18px; }
+    .cw-grp.me .cw-b:last-child  { border-radius: 18px 4px 18px 18px; }
+
+    /* Owner — sombre */
+    .cw-grp.you .cw-b {
+      background: #222; color: #e5e5e5;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 18px 18px 18px 4px;
+    }
+    .cw-grp.you .cw-b:not(:last-child) { border-radius: 18px 18px 4px 4px; }
+    .cw-grp.you .cw-b:last-child  { border-radius: 4px 18px 18px 4px; }
+
+    /* Meta (heure) */
+    .cw-meta { font-size: 0.62rem; color: rgba(245,245,245,0.2); margin-top: 3px; padding: 0 3px; }
+    .cw-grp.me  .cw-meta { text-align: right; }
+    .cw-grp.you .cw-meta { text-align: left; padding-left: 0.5rem; }
+
+    /* Typing */
+    .cw-typing { display: flex; align-items: flex-end; gap: 0.5rem; }
+    .cw-typing-ava {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #F97316, #EA580C);
+      display: flex; align-items: center; justify-content: center; font-size: 0.72rem;
+    }
+    .cw-typing-b {
+      background: #222; border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 18px 18px 18px 4px;
+      padding: 0.7rem 0.9rem; display: flex; gap: 4px; align-items: center;
+    }
+    .cw-typing-b span {
+      width: 6px; height: 6px; border-radius: 50%; background: rgba(245,245,245,0.35);
+      animation: cwDot 1.4s ease infinite;
+      display: block;
+    }
+    .cw-typing-b span:nth-child(2) { animation-delay: 0.2s; }
+    .cw-typing-b span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes cwDot { 0%,60%,100%{transform:scale(0.7);opacity:0.35} 30%{transform:scale(1.1);opacity:1} }
+
+    /* ── Input ──────────────────────────────────────────── */
+    #cw-foot {
+      flex-shrink: 0;
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem;
+      background: #0e0e0e;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
     #cw-input {
-      flex: 1; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.08);
-      color: #f0f0f0; border-radius: 10px; padding: 0.6rem 0.9rem;
-      font-size: 0.83rem; outline: none; font-family: inherit;
+      flex: 1; background: #1e1e1e;
+      border: 1px solid rgba(255,255,255,0.09);
+      color: #f0f0f0; border-radius: 12px;
+      padding: 0.6rem 0.9rem; font-size: 0.84rem;
+      outline: none; font-family: inherit;
       transition: border-color 0.2s;
     }
-    #cw-input:focus { border-color: rgba(249,115,22,0.5); }
-    #cw-input::placeholder { color: rgba(240,240,240,0.3); }
+    #cw-input:focus { border-color: rgba(249,115,22,0.45); }
+    #cw-input::placeholder { color: rgba(240,240,240,0.25); }
     #cw-send {
-      width: 38px; height: 38px; flex-shrink: 0;
+      width: 36px; height: 36px; flex-shrink: 0;
       background: #F97316; border: none; border-radius: 10px;
-      color: #0a0a0a; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, transform 0.15s;
+      color: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, transform 0.1s;
     }
-    #cw-send:hover { background: #EA6700; transform: scale(1.05); }
-    #cw-send:active { transform: scale(0.97); }
+    #cw-send:hover  { background: #ea6700; }
+    #cw-send:active { transform: scale(0.93); }
 
     @media (max-width: 480px) {
-      #cw-panel { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; }
+      #cw-panel { width: calc(100vw - 2rem); right: 1rem; }
+      #cw-btn   { bottom: 1.25rem; right: 1.25rem; }
     }
   </style>
 
@@ -246,31 +331,63 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
       return sessionId;
     }
 
+    function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
     // ── Render messages ─────────────────────────────────────────
+    // On regroupe les messages consécutifs du même expéditeur
     function renderMsg(msg, animate = true) {
       if (document.querySelector(`[data-mid="${msg.id}"]`)) return;
       const isMe = msg.sender === 'visitor';
-      const row  = document.createElement('div');
-      row.className = `cw-row ${isMe ? 'me' : 'you'}`;
-      row.dataset.mid = msg.id;
-      const time = new Date(msg.created_at).toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' });
-      row.innerHTML = `
-        ${!isMe ? '<p class="cw-sender">3D Print</p>' : ''}
-        <div class="cw-bubble" ${animate ? '' : 'style="animation:none"'}>${escHtml(msg.message)}</div>
-        <span class="cw-time">${time}</span>`;
-      cwBody.appendChild(row);
+      const side = isMe ? 'me' : 'you';
+      const time  = new Date(msg.created_at).toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' });
+      const anim  = animate ? '' : 'style="animation:none"';
+
+      // Cherche si le dernier groupe est du même côté
+      const lastGrp = cwBody.querySelector(`.cw-grp.${side}:last-child`);
+      // On regroupe si le dernier groupe existant est du même côté
+      const prevGroup = cwBody.lastElementChild?.classList.contains(`cw-grp`) && cwBody.lastElementChild?.classList.contains(side)
+        ? cwBody.lastElementChild : null;
+
+      if (prevGroup) {
+        // Ajoute la bulle dans le groupe existant
+        const msgsContainer = prevGroup.querySelector('.cw-msgs') || prevGroup;
+        const bubble = document.createElement('div');
+        bubble.className = 'cw-b'; bubble.dataset.mid = msg.id;
+        bubble.setAttribute('style', animate ? '' : 'animation:none');
+        bubble.textContent = msg.message;
+        msgsContainer.appendChild(bubble);
+        // Met à jour l'heure sur le groupe
+        const metaEl = prevGroup.querySelector('.cw-meta');
+        if (metaEl) metaEl.textContent = time;
+      } else {
+        // Nouveau groupe
+        const grp = document.createElement('div');
+        grp.className = `cw-grp ${side}`;
+        if (isMe) {
+          grp.innerHTML = `
+            <div class="cw-b" data-mid="${msg.id}" ${anim}>${escHtml(msg.message)}</div>
+            <span class="cw-meta">${time}</span>`;
+        } else {
+          grp.innerHTML = `
+            <div class="cw-grp-ava">🖨️</div>
+            <div class="cw-msgs">
+              <div class="cw-b" data-mid="${msg.id}" ${anim}>${escHtml(msg.message)}</div>
+              <span class="cw-meta">${time}</span>
+            </div>`;
+        }
+        cwBody.appendChild(grp);
+      }
+
       cwBody.scrollTop = cwBody.scrollHeight;
       lastTs = msg.created_at;
       localStorage.setItem('chat_3dp_ts', lastTs);
     }
 
-    function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
     function showTyping() {
       if (typingEl) return;
       typingEl = document.createElement('div');
-      typingEl.className = 'cw-row you cw-typing';
-      typingEl.innerHTML = '<div class="cw-bubble"><div class="cw-dots"><span></span><span></span><span></span></div></div>';
+      typingEl.className = 'cw-typing';
+      typingEl.innerHTML = `<div class="cw-typing-ava">🖨️</div><div class="cw-typing-b"><span></span><span></span><span></span></div>`;
       cwBody.appendChild(typingEl);
       cwBody.scrollTop = cwBody.scrollHeight;
     }
