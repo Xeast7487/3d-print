@@ -63,5 +63,18 @@
     "print_hours": 0,
     "price_range": "20$",
     "featured": false
+  },
+  {
+    "id": "calendrier-de-nourrissage-quotidien-des-animaux",
+    "name": "Calendrier de Nourrissage Quotidien des Animaux",
+    "description": "",
+    "category": "Utilitaires",
+    "photos": ["/prints/calendrier-de-nourrissage-quotidien-des-animaux.png"],
+    "colors_available": [],
+    "material": "PLA",
+    "weight_g": 0,
+    "print_hours": 0,
+    "price_range": "20$",
+    "featured": false
   }
 ]
