@@ -1,0 +1,97 @@
+---
+export interface Props { title: string; description?: string; }
+const { title, description = 'Impressions 3D sur commande — Figurines, pièces, prototypes. Qualité professionnelle, livraison rapide.' } = Astro.props;
+---
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style is:global>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent:      #F97316;
+      --accent-dark: #EA6700;
+      --accent-glow: rgba(249,115,22,0.15);
+      --bg:          #0A0A0A;
+      --bg-2:        #111111;
+      --bg-3:        #1A1A1A;
+      --border:      rgba(255,255,255,0.08);
+      --white:       #F5F5F5;
+      --gray:        rgba(245,245,245,0.5);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--white); min-height: 100vh; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; object-fit: cover; }
+
+    .reveal       { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-scale { opacity: 0; transform: scale(0.94); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal-scale.visible { opacity: 1; transform: none; }
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+    .delay-4 { transition-delay: 0.4s; }
+
+    @keyframes shimmer {
+      0%   { background-position: -300% center; }
+      100% { background-position:  300% center; }
+    }
+    .text-accent { color: var(--accent); }
+    .text-shimmer {
+      background: linear-gradient(90deg, #F97316 0%, #FBBF24 40%, #F97316 70%, #FB923C 100%);
+      background-size: 300% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: shimmer 3.5s linear infinite;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <slot />
+  <!-- Tawk.to chat widget -->
+  <!-- Remplace TAWKTO_PROPERTY_ID et TAWKTO_WIDGET_ID par tes vraies valeurs Tawk.to -->
+  <script>
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    // (function(){
+    //   var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    //   s1.async=true;
+    //   s1.src='https://embed.tawk.to/TAWKTO_PROPERTY_ID/TAWKTO_WIDGET_ID';
+    //   s1.charset='UTF-8';
+    //   s1.setAttribute('crossorigin','*');
+    //   s0.parentNode.insertBefore(s1,s0);
+    // })();
+  </script>
+  <script>
+    document.querySelectorAll('.reveal, .reveal-scale').forEach(el =>
+      new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')), { threshold: 0.1 }).observe(el)
+    );
+    document.querySelectorAll('[data-count]').forEach(el => {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          const target = +e.target.dataset.count, suffix = e.target.dataset.suffix||'';
+          const t0 = performance.now();
+          const tick = now => {
+            const p = Math.min((now-t0)/1600, 1);
+            e.target.textContent = Math.floor(target*(1-Math.pow(1-p,3)))+suffix;
+            if (p<1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          io.unobserve(e.target);
+        });
+      }, { threshold: 0.5 });
+      io.observe(el);
+    });
+  </script>
+</body>
+</html>

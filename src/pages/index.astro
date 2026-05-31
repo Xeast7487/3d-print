@@ -1,0 +1,324 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import prints from '../data/prints.json';
+import inventory from '../data/inventory.json';
+
+const featured = prints.filter(p => p.featured);
+const filaments = inventory.filaments;
+const categories = [...new Set(prints.map(p => p.category))];
+---
+<Layout title="Print. — Impressions 3D sur commande">
+  <Nav />
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-bg"></div>
+      <div class="container">
+        <div class="hero-badge" style="animation: fadeUp 0.6s ease 0.1s both;">
+          <span class="dot"></span> Service disponible · Délai 2-5 jours
+        </div>
+        <h1 style="animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.25s both;">
+          Impressions <span class="text-shimmer">3D</span><br />sur commande
+        </h1>
+        <p class="hero-sub" style="animation: fadeUp 0.7s ease 0.5s both;">
+          Figurines, pièces techniques, prototypes, objets déco.<br />
+          Envoie-moi ton idée — je l'imprime.
+        </p>
+        <div class="hero-actions" style="animation: fadeUp 0.6s ease 0.7s both;">
+          <a class="btn-primary" href="#contact">Faire une commande</a>
+          <a class="btn-ghost" href="#galerie">Voir la galerie</a>
+        </div>
+      </div>
+      <div class="hero-scroll"><span></span><p>Défiler</p></div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-bar">
+      <div class="container stats-grid">
+        {[
+          { n: prints.length, s: '+', label: 'Modèles réalisés' },
+          { n: filaments.length, s: '', label: 'Couleurs disponibles' },
+          { n: 2, s: '-5 jours', label: 'Délai moyen' },
+          { n: 100, s: '%', label: 'Satisfaction client' },
+        ].map((s, i) => (
+          <div class={`stat reveal delay-${i+1}`}>
+            <div class="stat-n"><span data-count={s.n} data-suffix={s.s}>0{s.s}</span></div>
+            <p class="stat-label">{s.label}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- GALERIE -->
+    <section class="section" id="galerie">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">Mes réalisations</p>
+          <h2>Galerie <span class="text-accent">d'impressions</span></h2>
+          <p class="section-sub">Chaque pièce est imprimée avec soin. Clique sur un projet pour les détails.</p>
+        </div>
+
+        {prints.length === 0 ? (
+          <div class="empty-gallery reveal">
+            <div class="empty-icon">🖨️</div>
+            <p>Les premières impressions arrivent bientôt !</p>
+          </div>
+        ) : (
+          <div class="prints-grid">
+            {prints.map((p, i) => (
+              <div class={`print-card reveal-scale delay-${(i%4)+1}`}>
+                <div class="card-photo">
+                  {p.photos.length > 0 ? (
+                    <img src={p.photos[0]} alt={p.name} loading="lazy" />
+                  ) : (
+                    <div class="photo-placeholder">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                      </svg>
+                    </div>
+                  )}
+                  <span class="card-category">{p.category}</span>
+                </div>
+                <div class="card-body">
+                  <h3>{p.name}</h3>
+                  <p class="card-desc">{p.description}</p>
+                  <div class="card-meta">
+                    <span class="tag">{p.material}</span>
+                    {p.colors_available.slice(0, 3).map(c => <span class="tag">{c}</span>)}
+                  </div>
+                  <div class="card-footer">
+                    <span class="price">À partir de {p.price_range.split('-')[0]}$</span>
+                    <a href="#contact" class="btn-sm">Commander</a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- COMMENT CA MARCHE -->
+    <section class="section section-dark" id="comment">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">Processus</p>
+          <h2>Comment <span class="text-accent">ça marche</span></h2>
+        </div>
+        <div class="steps-grid">
+          {[
+            { n: '01', icon: '💬', title: 'Envoie ta demande', desc: 'Décris ce que tu veux imprimer via le chat ou le formulaire. Photo de référence bienvenue.' },
+            { n: '02', icon: '💰', title: 'Reçois un devis', desc: 'Je calcule le prix selon le poids de filament, le temps d\'impression et la complexité.' },
+            { n: '03', icon: '🖨️', title: 'Impression en cours', desc: 'Je lance l\'impression. Suivi disponible sur demande. Délai habituel : 2 à 5 jours.' },
+            { n: '04', icon: '📦', title: 'Livraison', desc: 'Remise en main propre ou envoi postal. La pièce arrive emballée et protégée.' },
+          ].map((s, i) => (
+            <div class={`step reveal delay-${i+1}`}>
+              <div class="step-top">
+                <span class="step-n">{s.n}</span>
+                <span class="step-icon">{s.icon}</span>
+              </div>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- COULEURS DISPONIBLES -->
+    <section class="section" id="couleurs">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">Inventaire</p>
+          <h2>Couleurs <span class="text-accent">disponibles</span></h2>
+          <p class="section-sub">Voici les filaments actuellement en stock. D'autres couleurs peuvent être commandées sur demande.</p>
+        </div>
+        <div class="colors-grid">
+          {filaments.map((f, i) => (
+            <div class={`color-card reveal delay-${(i%4)+1}`}>
+              <div class="color-swatch" style={`background: ${f.hex}`}></div>
+              <div class="color-info">
+                <span class="color-name">{f.name}</span>
+                <span class="color-mat">{f.material}</span>
+              </div>
+              <div class={`color-stock ${f.amount_g < 200 ? 'stock-low' : 'stock-ok'}`}>
+                {f.amount_g < 200 ? '⚠ Stock limité' : '✓ En stock'}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / COMMANDE -->
+    <section class="section section-cta" id="contact">
+      <div class="cta-bg"></div>
+      <div class="container cta-inner reveal">
+        <div class="cta-icon">🖨️</div>
+        <h2>Prêt à imprimer <span class="text-shimmer">ton idée</span> ?</h2>
+        <p>Contacte-moi via le chat ci-dessous ou envoie-moi un message direct.<br />Réponse rapide garantie.</p>
+        <div class="cta-actions">
+          <button class="btn-primary btn-lg" onclick="if(window.Tawk_API) window.Tawk_API.toggle()">
+            💬 Ouvrir le chat
+          </button>
+        </div>
+        <p class="cta-note">Tu peux aussi me contacter par email ou Discord</p>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  main { padding-top: 64px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+  .eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .section-header { text-align: center; margin-bottom: 4rem; }
+  .section-header h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 700; margin-bottom: 0.75rem; }
+  .section-sub { font-size: 0.95rem; color: var(--gray); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+  .section { padding: 6rem 2rem; }
+  .section-dark { background: var(--bg-2); }
+
+  /* Buttons */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--accent); color: #0A0A0A; padding: 0.85rem 1.75rem; border-radius: 8px;
+    font-weight: 700; font-size: 0.9rem; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 0 24px rgba(249,115,22,0.4); }
+  .btn-primary.btn-lg { padding: 1rem 2.25rem; font-size: 1rem; border-radius: 10px; }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent; color: var(--gray); padding: 0.85rem 1.75rem; border-radius: 8px;
+    font-weight: 600; font-size: 0.9rem; border: 1px solid var(--border);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--white); border-color: var(--accent); }
+  .btn-sm {
+    display: inline-flex; align-items: center;
+    background: var(--accent); color: #0A0A0A; padding: 0.4rem 0.9rem; border-radius: 5px;
+    font-size: 0.78rem; font-weight: 700; transition: background 0.2s;
+  }
+  .btn-sm:hover { background: var(--accent-dark); }
+
+  /* Hero */
+  @keyframes fadeUp { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: none; } }
+  @keyframes scrollLine { 0%,100%{opacity:0.3;transform:scaleY(0.5)}50%{opacity:1;transform:scaleY(1)} }
+  .hero {
+    position: relative; min-height: 100vh; display: flex; align-items: center;
+    justify-content: center; overflow: hidden; padding: 5rem 2rem 4rem;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 20% 50%, rgba(249,115,22,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 50% at 80% 20%, rgba(249,115,22,0.04) 0%, transparent 50%), var(--bg);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.035;
+    background-image: linear-gradient(rgba(249,115,22,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.8) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 70%);
+  }
+  .hero > .container { position: relative; max-width: 780px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2);
+    border-radius: 999px; padding: 0.4rem 1rem;
+    font-size: 0.78rem; font-weight: 600; color: rgba(245,245,245,0.65);
+    margin-bottom: 2rem; letter-spacing: 0.03em;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px #4ade80; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.35} }
+  .hero h1 { font-size: clamp(3rem, 10vw, 7rem); font-weight: 700; line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+  .hero-sub { font-size: 1.05rem; color: var(--gray); line-height: 1.7; max-width: 460px; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    animation: fadeUp 0.6s ease 1.2s both;
+  }
+  .hero-scroll span { display: block; width: 1px; height: 36px; background: linear-gradient(to bottom, transparent, var(--accent)); animation: scrollLine 1.5s ease infinite; }
+  .hero-scroll p { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.18); }
+
+  /* Stats */
+  .stats-bar { background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 3rem 2rem; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+  .stat { text-align: center; }
+  .stat-n { font-family: 'Space Mono', monospace; font-size: 2.5rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.4rem; }
+  .stat-label { font-size: 0.8rem; color: var(--gray); font-weight: 500; }
+
+  /* Prints grid */
+  .prints-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .print-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+  .print-card:hover { border-color: rgba(249,115,22,0.3); transform: translateY(-4px); }
+  .card-photo { position: relative; aspect-ratio: 4/3; background: var(--bg-2); overflow: hidden; }
+  .card-photo img { width: 100%; height: 100%; transition: transform 0.4s; }
+  .print-card:hover .card-photo img { transform: scale(1.05); }
+  .photo-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .card-category { position: absolute; top: 0.75rem; left: 0.75rem; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); border: 1px solid var(--border); border-radius: 999px; padding: 0.25rem 0.7rem; font-size: 0.7rem; font-weight: 600; color: var(--gray); }
+  .card-body { padding: 1.25rem; }
+  .card-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .card-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.6; margin-bottom: 0.75rem; }
+  .card-meta { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem; }
+  .tag { font-size: 0.7rem; font-weight: 600; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 4px; padding: 0.15rem 0.5rem; color: var(--gray); }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .price { font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700; color: var(--accent); }
+
+  /* Empty gallery */
+  .empty-gallery { text-align: center; padding: 5rem 2rem; border: 1px dashed var(--border); border-radius: 16px; }
+  .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .empty-gallery p { color: var(--gray); }
+
+  /* Steps */
+  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .step { background: var(--bg-3); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; position: relative; overflow: hidden; }
+  .step::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); }
+  .step-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+  .step-n { font-family: 'Space Mono', monospace; font-size: 2.5rem; font-weight: 700; color: rgba(249,115,22,0.15); line-height: 1; }
+  .step-icon { font-size: 1.75rem; }
+  .step h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .step p { font-size: 0.82rem; color: var(--gray); line-height: 1.65; }
+
+  /* Colors */
+  .colors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .color-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; display: flex; align-items: center; gap: 0.75rem; transition: border-color 0.2s; }
+  .color-card:hover { border-color: rgba(249,115,22,0.25); }
+  .color-swatch { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); }
+  .color-info { flex: 1; }
+  .color-name { display: block; font-size: 0.85rem; font-weight: 600; }
+  .color-mat { font-size: 0.7rem; color: var(--gray); }
+  .color-stock { font-size: 0.68rem; font-weight: 600; white-space: nowrap; }
+  .stock-ok { color: #4ade80; }
+  .stock-low { color: #fbbf24; }
+
+  /* CTA */
+  .section-cta { position: relative; padding: 8rem 2rem; overflow: hidden; }
+  .cta-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(249,115,22,0.06) 0%, transparent 60%), var(--bg-2); }
+  .cta-inner { position: relative; text-align: center; max-width: 580px; margin: 0 auto; }
+  .cta-icon { font-size: 3rem; margin-bottom: 1.5rem; }
+  .section-cta h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 700; margin-bottom: 1rem; }
+  .section-cta p { font-size: 0.95rem; color: var(--gray); line-height: 1.7; margin-bottom: 2rem; }
+  .cta-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .cta-note { font-size: 0.8rem; color: rgba(245,245,245,0.25); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .prints-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .colors-grid { grid-template-columns: repeat(3, 1fr); }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .prints-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .colors-grid { grid-template-columns: 1fr 1fr; }
+    .hero-actions { flex-direction: column; }
+  }
+</style>

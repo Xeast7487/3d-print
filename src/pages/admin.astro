@@ -1,0 +1,271 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import inventory from '../data/inventory.json';
+import prints from '../data/prints.json';
+---
+<Layout title="Admin — Print.">
+  <Nav />
+  <main>
+    <div id="lock-screen">
+      <div class="lock-card">
+        <div class="lock-icon">🔒</div>
+        <h2>Accès admin</h2>
+        <p>Entre le mot de passe pour continuer</p>
+        <input type="password" id="pwd-input" placeholder="Mot de passe" autofocus />
+        <button id="pwd-btn" class="btn-primary">Entrer</button>
+        <p id="pwd-error" class="error-msg"></p>
+      </div>
+    </div>
+
+    <div id="admin-content" style="display:none">
+      <div class="container">
+        <div class="admin-header">
+          <h1>🛠️ Administration</h1>
+          <button id="logout-btn" class="btn-ghost-sm">Déconnexion</button>
+        </div>
+
+        <!-- INVENTAIRE FILAMENTS -->
+        <section class="admin-section">
+          <h2>🎨 Inventaire des filaments</h2>
+          <p class="admin-sub">Modifie <code>src/data/inventory.json</code> via le bot Discord pour mettre à jour.</p>
+          <div class="inv-grid">
+            {inventory.filaments.map(f => (
+              <div class="inv-card">
+                <div class="inv-swatch" style={`background: ${f.hex}`}></div>
+                <div class="inv-info">
+                  <span class="inv-name">{f.name}</span>
+                  <span class="inv-brand">{f.brand} · {f.material}</span>
+                </div>
+                <div class="inv-amount">
+                  <span class={`amount ${f.amount_g < 200 ? 'low' : f.amount_g < 400 ? 'mid' : 'ok'}`}>
+                    {f.amount_g}g
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div class="settings-row">
+            <div class="setting-card">
+              <p class="setting-label">Coût filament</p>
+              <p class="setting-val">{inventory.settings.filament_cost_per_kg}$/kg</p>
+            </div>
+            <div class="setting-card">
+              <p class="setting-label">Électricité</p>
+              <p class="setting-val">{inventory.settings.electricity_rate_per_hour}$/h</p>
+            </div>
+            <div class="setting-card">
+              <p class="setting-label">Impressions</p>
+              <p class="setting-val">{prints.length} modèles</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- CALCULATRICE -->
+        <section class="admin-section">
+          <h2>💰 Calculatrice de prix</h2>
+          <p class="admin-sub">Estime le prix de vente d'une impression.</p>
+          <div class="calc-grid">
+            <div class="calc-inputs">
+              <div class="calc-field">
+                <label>Poids de filament utilisé (g)</label>
+                <input type="number" id="calc-weight" value="50" min="1" />
+              </div>
+              <div class="calc-field">
+                <label>Temps d'impression (heures)</label>
+                <input type="number" id="calc-hours" value="2" min="0.5" step="0.5" />
+              </div>
+              <div class="calc-field">
+                <label>Complexité</label>
+                <select id="calc-complexity">
+                  <option value="1">Simple (figurine droite, pièce basique)</option>
+                  <option value="1.5" selected>Moyenne (détails modérés)</option>
+                  <option value="2.2">Complexe (supports, détails fins)</option>
+                  <option value="3">Très complexe (multi-pièces, assemblage)</option>
+                </select>
+              </div>
+              <div class="calc-field">
+                <label>Marge bénéficiaire (%)</label>
+                <input type="number" id="calc-margin" value="50" min="10" max="300" />
+              </div>
+              <button id="calc-btn" class="btn-primary" style="width:100%;margin-top:0.5rem">Calculer</button>
+            </div>
+            <div class="calc-result" id="calc-result">
+              <p class="calc-placeholder">👆 Remplis les champs pour obtenir un prix</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- IMPRESSIONS -->
+        <section class="admin-section">
+          <h2>🖨️ Impressions enregistrées ({prints.length})</h2>
+          <p class="admin-sub">Pour ajouter/modifier une impression, demande au bot Discord :<br/>
+          <em>"Ajoute une nouvelle impression dans data/prints.json : nom X, catégorie Y, prix Z..."</em></p>
+          <div class="prints-list">
+            {prints.map(p => (
+              <div class="print-row">
+                <div class="pr-photo">
+                  {p.photos.length > 0 ? <img src={p.photos[0]} alt={p.name} /> : <div class="pr-no-photo">📷</div>}
+                </div>
+                <div class="pr-info">
+                  <span class="pr-name">{p.name}</span>
+                  <span class="pr-meta">{p.category} · {p.material} · {p.price_range}$</span>
+                </div>
+                <span class={`pr-badge ${p.featured ? 'badge-on' : 'badge-off'}`}>{p.featured ? '⭐ Mis en avant' : 'Standard'}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script define:vars={{ adminPassword: inventory.settings.admin_password, filamentCostPerKg: inventory.settings.filament_cost_per_kg, electricityRate: inventory.settings.electricity_rate_per_hour }}>
+  // ── Auth ──────────────────────────────────────────────────────
+  const lock    = document.getElementById('lock-screen');
+  const content = document.getElementById('admin-content');
+  const pwdInput = document.getElementById('pwd-input');
+  const pwdBtn  = document.getElementById('pwd-btn');
+  const pwdErr  = document.getElementById('pwd-error');
+
+  function unlock() {
+    if (pwdInput.value === adminPassword) {
+      sessionStorage.setItem('admin-auth', '1');
+      lock.style.display = 'none';
+      content.style.display = 'block';
+    } else {
+      pwdErr.textContent = 'Mot de passe incorrect.';
+      pwdInput.value = '';
+    }
+  }
+  if (sessionStorage.getItem('admin-auth') === '1') {
+    lock.style.display = 'none';
+    content.style.display = 'block';
+  }
+  pwdBtn.addEventListener('click', unlock);
+  pwdInput.addEventListener('keydown', e => e.key === 'Enter' && unlock());
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    sessionStorage.removeItem('admin-auth');
+    location.reload();
+  });
+
+  // ── Calculatrice ──────────────────────────────────────────────
+  document.getElementById('calc-btn').addEventListener('click', () => {
+    const weight     = parseFloat(document.getElementById('calc-weight').value) || 0;
+    const hours      = parseFloat(document.getElementById('calc-hours').value) || 0;
+    const complexity = parseFloat(document.getElementById('calc-complexity').value) || 1;
+    const margin     = parseFloat(document.getElementById('calc-margin').value) / 100 || 0.5;
+
+    const filamentCost   = (weight / 1000) * filamentCostPerKg;
+    const electricityCost = hours * electricityRate;
+    const baseCost       = (filamentCost + electricityCost) * complexity;
+    const totalCost      = baseCost * (1 + margin);
+    const suggested      = Math.ceil(totalCost * 2) / 2; // arrondi à 0.50$
+
+    const r = document.getElementById('calc-result');
+    r.innerHTML = `
+      <div class="result-price">
+        <span class="result-label">Prix suggéré</span>
+        <span class="result-val">${suggested.toFixed(2)} $</span>
+      </div>
+      <div class="result-breakdown">
+        <div class="rb-row"><span>Filament (${weight}g)</span><span>${filamentCost.toFixed(2)} $</span></div>
+        <div class="rb-row"><span>Électricité (${hours}h)</span><span>${electricityCost.toFixed(2)} $</span></div>
+        <div class="rb-row"><span>Multiplicateur complexité</span><span>×${complexity}</span></div>
+        <div class="rb-row"><span>Coût de base</span><span>${baseCost.toFixed(2)} $</span></div>
+        <div class="rb-row rb-margin"><span>Marge (${Math.round(margin*100)}%)</span><span>+${(baseCost * margin).toFixed(2)} $</span></div>
+        <div class="rb-row rb-total"><span>Total</span><span>${suggested.toFixed(2)} $</span></div>
+      </div>
+      <p class="result-note">Prix plancher recommandé : <strong>${(baseCost * 1.1).toFixed(2)} $</strong></p>
+    `;
+  });
+</script>
+
+<style>
+  main { padding-top: 64px; min-height: 100vh; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+  /* Lock screen */
+  #lock-screen { min-height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center; }
+  .lock-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: 20px; padding: 3rem; width: 100%; max-width: 380px; text-align: center; }
+  .lock-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .lock-card h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .lock-card > p { font-size: 0.875rem; color: var(--gray); margin-bottom: 1.5rem; }
+  .lock-card input { width: 100%; background: var(--bg-3); border: 1px solid var(--border); color: var(--white); border-radius: 8px; padding: 0.7rem 1rem; font-size: 0.9rem; margin-bottom: 0.75rem; outline: none; font-family: inherit; }
+  .lock-card input:focus { border-color: var(--accent); }
+  .lock-card .btn-primary { width: 100%; justify-content: center; font-family: inherit; }
+  .error-msg { margin-top: 0.75rem; font-size: 0.82rem; color: #f87171; min-height: 1rem; }
+
+  /* Admin */
+  .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3rem; }
+  .admin-header h1 { font-size: 1.5rem; font-weight: 700; }
+  .btn-ghost-sm { background: transparent; border: 1px solid var(--border); color: var(--gray); padding: 0.4rem 0.9rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-family: inherit; transition: color 0.2s, border-color 0.2s; }
+  .btn-ghost-sm:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+  .admin-section { background: var(--bg-2); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
+  .admin-section h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .admin-sub { font-size: 0.82rem; color: var(--gray); margin-bottom: 1.5rem; line-height: 1.6; }
+  .admin-sub code { background: var(--bg-3); padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.8rem; color: var(--accent); }
+  .admin-sub em { color: rgba(245,245,245,0.35); font-style: normal; }
+
+  /* Inventory */
+  .inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem; }
+  .inv-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.75rem; }
+  .inv-swatch { width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); }
+  .inv-info { flex: 1; }
+  .inv-name { display: block; font-size: 0.85rem; font-weight: 600; }
+  .inv-brand { font-size: 0.7rem; color: var(--gray); }
+  .amount { font-family: 'Space Mono', monospace; font-size: 0.82rem; font-weight: 700; }
+  .amount.ok  { color: #4ade80; }
+  .amount.mid { color: #fbbf24; }
+  .amount.low { color: #f87171; }
+  .settings-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+  .setting-card { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+  .setting-label { font-size: 0.72rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem; }
+  .setting-val { font-family: 'Space Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+
+  /* Calculator */
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .calc-field { margin-bottom: 1rem; }
+  .calc-field label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--gray); margin-bottom: 0.4rem; }
+  .calc-field input, .calc-field select {
+    width: 100%; background: var(--bg-3); border: 1px solid var(--border); color: var(--white);
+    border-radius: 8px; padding: 0.6rem 0.9rem; font-size: 0.875rem; outline: none; font-family: inherit;
+  }
+  .calc-field input:focus, .calc-field select:focus { border-color: var(--accent); }
+  .calc-result { background: var(--bg-3); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; }
+  .calc-placeholder { color: var(--gray); font-size: 0.875rem; text-align: center; }
+  .result-price { text-align: center; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .result-label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); margin-bottom: 0.4rem; }
+  .result-val { font-family: 'Space Mono', monospace; font-size: 2.5rem; font-weight: 700; color: var(--accent); }
+  .result-breakdown { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .rb-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--gray); }
+  .rb-margin { color: #4ade80; }
+  .rb-total { color: var(--white); font-weight: 700; padding-top: 0.4rem; border-top: 1px solid var(--border); }
+  .result-note { font-size: 0.78rem; color: var(--gray); }
+  .result-note strong { color: var(--white); }
+
+  /* Prints list */
+  .prints-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .print-row { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 1rem; }
+  .pr-photo { width: 48px; height: 48px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: var(--bg-2); display: flex; align-items: center; justify-content: center; }
+  .pr-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .pr-no-photo { font-size: 1.25rem; opacity: 0.3; }
+  .pr-info { flex: 1; }
+  .pr-name { display: block; font-size: 0.9rem; font-weight: 600; }
+  .pr-meta { font-size: 0.75rem; color: var(--gray); }
+  .pr-badge { font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 999px; flex-shrink: 0; }
+  .badge-on  { background: rgba(249,115,22,0.15); color: var(--accent); border: 1px solid rgba(249,115,22,0.3); }
+  .badge-off { background: rgba(255,255,255,0.05); color: var(--gray); border: 1px solid var(--border); }
+
+  /* Buttons */
+  .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--accent); color: #0A0A0A; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 700; font-size: 0.875rem; border: none; cursor: pointer; font-family: inherit; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--accent-dark); }
+
+  @media (max-width: 700px) {
+    .calc-grid { grid-template-columns: 1fr; }
+    .settings-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+---
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <a href="/" class="logo">
+          <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="rgba(249,115,22,0.15)" stroke="#F97316" stroke-width="1.5"/><text x="14" y="18" text-anchor="middle" font-family="Space Mono" font-weight="700" font-size="9" fill="#F97316">3D</text></svg>
+          <span>Print<span style="color:var(--accent)">.</span></span>
+        </a>
+        <p>Impressions 3D sur commande.<br/>Qualité professionnelle.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#galerie">Galerie</a>
+        <a href="#comment">Comment ça marche</a>
+        <a href="#couleurs">Couleurs dispo</a>
+        <a href="#contact">Commander</a>
+        <a href="/admin">Admin</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; {new Date().getFullYear()} Print. — Tous droits réservés</p>
+    </div>
+  </div>
+</footer>
+<style>
+  footer { background: var(--bg-2); border-top: 1px solid var(--border); padding: 3rem 2rem 1.5rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .logo { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1rem; margin-bottom: 0.6rem; }
+  footer p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+  .footer-links { display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-links a { font-size: 0.85rem; color: var(--gray); transition: color 0.2s; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom { padding-top: 1.25rem; }
+  .footer-bottom p { font-size: 0.75rem; color: rgba(245,245,245,0.2); }
+</style>

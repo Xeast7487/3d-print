@@ -1,0 +1,17 @@
+{
+  "settings": {
+    "filament_cost_per_kg": 25,
+    "electricity_rate_per_hour": 0.50,
+    "admin_password": "3dprint2025"
+  },
+  "filaments": [
+    { "name": "Blanc",     "hex": "#F5F5F5", "material": "PLA",  "amount_g": 1000, "brand": "Bambu" },
+    { "name": "Noir",      "hex": "#1A1A1A", "material": "PLA",  "amount_g": 800,  "brand": "Bambu" },
+    { "name": "Gris",      "hex": "#9CA3AF", "material": "PLA",  "amount_g": 600,  "brand": "Bambu" },
+    { "name": "Rouge",     "hex": "#EF4444", "material": "PLA",  "amount_g": 400,  "brand": "Bambu" },
+    { "name": "Bleu",      "hex": "#3B82F6", "material": "PLA",  "amount_g": 500,  "brand": "Bambu" },
+    { "name": "Vert",      "hex": "#22C55E", "material": "PLA",  "amount_g": 300,  "brand": "Bambu" },
+    { "name": "Orange",    "hex": "#F97316", "material": "PLA",  "amount_g": 250,  "brand": "Bambu" },
+    { "name": "Noir PETG", "hex": "#111111", "material": "PETG", "amount_g": 700,  "brand": "Bambu" }
+  ]
+}

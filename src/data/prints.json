@@ -1,0 +1,28 @@
+[
+  {
+    "id": "sample-figurine",
+    "name": "Figurine personnalisée",
+    "description": "Figurine imprimée sur mesure selon vos spécifications. Haute résolution, détails fins.",
+    "category": "Figurines",
+    "photos": [],
+    "colors_available": ["Blanc", "Noir", "Gris"],
+    "material": "PLA",
+    "weight_g": 45,
+    "print_hours": 3,
+    "price_range": "15-25",
+    "featured": true
+  },
+  {
+    "id": "sample-support",
+    "name": "Support de téléphone",
+    "description": "Support de bureau ajustable pour téléphone. Solide et pratique.",
+    "category": "Utilitaires",
+    "photos": [],
+    "colors_available": ["Noir", "Blanc", "Bleu"],
+    "material": "PETG",
+    "weight_g": 30,
+    "print_hours": 2,
+    "price_range": "10-15",
+    "featured": false
+  }
+]
