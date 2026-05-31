@@ -58,17 +58,198 @@ const { title, description = 'Impressions 3D sur commande — Figurines, pièces
 </head>
 <body>
   <slot />
-  <!-- Tawk.to chat widget -->
+  <!-- Chat widget custom -->
+  <div id="chat-btn" title="Nous écrire">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span id="chat-badge" style="display:none">1</span>
+  </div>
+  <div id="chat-panel">
+    <div id="chat-head">
+      <div class="ch-info">
+        <div class="ch-dot"></div>
+        <div>
+          <p class="ch-title">Chat — 3D Print</p>
+          <p class="ch-sub">Réponse rapide garantie</p>
+        </div>
+      </div>
+      <button id="chat-close">×</button>
+    </div>
+    <div id="chat-body"></div>
+    <div id="chat-foot">
+      <input id="chat-input" placeholder="Votre message..." autocomplete="off" />
+      <button id="chat-send">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <style>
+    #chat-btn {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: #F97316; color: #0A0A0A;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 4px 20px rgba(249,115,22,0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    #chat-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(249,115,22,0.65); }
+    #chat-badge {
+      position: absolute; top: -4px; right: -4px;
+      background: #ef4444; color: #fff;
+      width: 18px; height: 18px; border-radius: 50%;
+      font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #chat-panel {
+      position: fixed; bottom: 5rem; right: 1.5rem; z-index: 9998;
+      width: 340px; height: 480px;
+      background: #111; border: 1px solid rgba(249,115,22,0.25);
+      border-radius: 16px; overflow: hidden;
+      display: none; flex-direction: column;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    #chat-panel.open { display: flex; }
+    #chat-head { background: #F97316; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+    .ch-info { display: flex; align-items: center; gap: 0.65rem; }
+    .ch-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px rgba(255,255,255,0.8); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.4} }
+    .ch-title { font-size: 0.9rem; font-weight: 700; color: #0A0A0A; line-height: 1.2; }
+    .ch-sub { font-size: 0.7rem; color: rgba(10,10,10,0.65); }
+    #chat-close { background: none; border: none; cursor: pointer; color: #0A0A0A; font-size: 1.4rem; line-height: 1; padding: 0; opacity: 0.7; }
+    #chat-close:hover { opacity: 1; }
+    #chat-body { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    #chat-body::-webkit-scrollbar { width: 3px; }
+    #chat-body::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+    .msg { max-width: 80%; padding: 0.55rem 0.85rem; border-radius: 12px; font-size: 0.82rem; line-height: 1.5; word-break: break-word; }
+    .msg-visitor { background: #1e1e1e; color: #f0f0f0; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .msg-owner { background: rgba(249,115,22,0.15); color: #f0f0f0; border: 1px solid rgba(249,115,22,0.3); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg-system { font-size: 0.72rem; color: rgba(255,255,255,0.3); text-align: center; align-self: center; }
+    .msg-time { font-size: 0.62rem; color: rgba(255,255,255,0.25); margin-top: 0.2rem; display: block; }
+    #chat-foot { padding: 0.75rem; border-top: 1px solid rgba(255,255,255,0.07); display: flex; gap: 0.5rem; background: #0a0a0a; }
+    #chat-input { flex: 1; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); color: #f0f0f0; border-radius: 8px; padding: 0.55rem 0.85rem; font-size: 0.82rem; outline: none; font-family: inherit; }
+    #chat-input:focus { border-color: rgba(249,115,22,0.5); }
+    #chat-send { width: 36px; height: 36px; background: #F97316; border: none; border-radius: 8px; color: #0a0a0a; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; }
+    #chat-send:hover { background: #EA6700; }
+  </style>
+
   <script>
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-      s1.async=true;
-      s1.src='https://embed.tawk.to/6a177038df494c1c358ed6c0/1jplosn8i';
-      s1.charset='UTF-8';
-      s1.setAttribute('crossorigin','*');
-      s0.parentNode.insertBefore(s1,s0);
-    })();
+    const SUPA_URL = 'https://gnpjilwdehxsafdqdtak.supabase.co';
+    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImducGppbHdkZWh4c2FmZHFkdGFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5Nzk3NjIsImV4cCI6MjA5NTU1NTc2Mn0.iFYR9r5ZZsKcc9n2N8jPtFTLs0QDTIqR3KMCMhCdSdA';
+
+    const btn    = document.getElementById('chat-btn');
+    const panel  = document.getElementById('chat-panel');
+    const close  = document.getElementById('chat-close');
+    const input  = document.getElementById('chat-input');
+    const send   = document.getElementById('chat-send');
+    const body   = document.getElementById('chat-body');
+    const badge  = document.getElementById('chat-badge');
+
+    let sessionId = localStorage.getItem('chat_3dp_session');
+    let lastMsgId = localStorage.getItem('chat_3dp_last') || null;
+    let open = false;
+    let pollInterval = null;
+    let newMessages = 0;
+
+    btn.addEventListener('click', () => {
+      open = !open;
+      panel.classList.toggle('open', open);
+      if (open) { badge.style.display = 'none'; newMessages = 0; input.focus(); loadMessages(); startPoll(); }
+      else stopPoll();
+    });
+    close.addEventListener('click', () => { open = false; panel.classList.remove('open'); stopPoll(); });
+
+    async function api(path, opts = {}) {
+      const res = await fetch(`${SUPA_URL}/rest/v1/${path}`, {
+        headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation', ...opts.headers },
+        ...opts,
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const text = await res.text();
+      return text ? JSON.parse(text) : null;
+    }
+
+    async function getSession() {
+      if (sessionId) return sessionId;
+      const data = await api('chat_sessions', { method: 'POST', body: JSON.stringify({ site: '3d-print', visitor_name: 'Visiteur' }) });
+      sessionId = data[0].id;
+      localStorage.setItem('chat_3dp_session', sessionId);
+      return sessionId;
+    }
+
+    function appendMsg(msg, scroll = true) {
+      const cls = msg.sender === 'visitor' ? 'msg-visitor' : 'msg-owner';
+      const time = new Date(msg.created_at).toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' });
+      const div = document.createElement('div');
+      div.className = `msg ${cls}`;
+      div.innerHTML = `${msg.message}<span class="msg-time">${time}</span>`;
+      div.dataset.id = msg.id;
+      body.appendChild(div);
+      if (scroll) body.scrollTop = body.scrollHeight;
+    }
+
+    async function loadMessages() {
+      if (!sessionId) { addSystemMsg('Envoie un premier message pour démarrer !'); return; }
+      body.innerHTML = '';
+      const msgs = await api(`chat_messages?session_id=eq.${sessionId}&order=created_at.asc`);
+      if (!msgs?.length) { addSystemMsg('Envoie un premier message pour démarrer !'); return; }
+      msgs.forEach(m => appendMsg(m, false));
+      body.scrollTop = body.scrollHeight;
+      lastMsgId = msgs[msgs.length - 1].id;
+      localStorage.setItem('chat_3dp_last', lastMsgId);
+    }
+
+    function addSystemMsg(text) {
+      const div = document.createElement('div');
+      div.className = 'msg msg-system';
+      div.textContent = text;
+      body.appendChild(div);
+    }
+
+    async function pollMessages() {
+      if (!sessionId) return;
+      const url = lastMsgId
+        ? `chat_messages?session_id=eq.${sessionId}&id=neq.${lastMsgId}&created_at=gt.${encodeURIComponent(new Date(0).toISOString())}&order=created_at.asc`
+        : `chat_messages?session_id=eq.${sessionId}&order=created_at.asc`;
+      try {
+        const msgs = await api(`chat_messages?session_id=eq.${sessionId}&order=created_at.asc${lastMsgId ? `&created_at=gt.${encodeURIComponent(await getLastTime())}` : ''}`);
+        if (!msgs?.length) return;
+        const existing = new Set([...body.querySelectorAll('[data-id]')].map(el => el.dataset.id));
+        let hasNew = false;
+        msgs.forEach(m => {
+          if (!existing.has(m.id)) {
+            appendMsg(m);
+            lastMsgId = m.id;
+            localStorage.setItem('chat_3dp_last', lastMsgId);
+            if (m.sender === 'owner' && !open) { newMessages++; badge.style.display = 'flex'; badge.textContent = newMessages; }
+            hasNew = true;
+          }
+        });
+      } catch {}
+    }
+
+    async function getLastTime() {
+      const el = [...body.querySelectorAll('[data-id]')].pop();
+      if (!el) return new Date(0).toISOString();
+      const msgs = await api(`chat_messages?id=eq.${el.dataset.id}&select=created_at`);
+      return msgs?.[0]?.created_at || new Date(0).toISOString();
+    }
+
+    function startPoll() { if (!pollInterval) pollInterval = setInterval(pollMessages, 5000); }
+    function stopPoll()  { clearInterval(pollInterval); pollInterval = null; }
+
+    async function doSend() {
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      const sid = await getSession();
+      const data = await api('chat_messages', { method: 'POST', body: JSON.stringify({ session_id: sid, sender: 'visitor', message: text }) });
+      if (data?.[0]) appendMsg(data[0]);
+      startPoll();
+    }
+
+    send.addEventListener('click', doSend);
+    input.addEventListener('keydown', e => e.key === 'Enter' && doSend());
   </script>
   <script>
     document.querySelectorAll('.reveal, .reveal-scale').forEach(el =>
