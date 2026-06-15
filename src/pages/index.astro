@@ -1,515 +1,140 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
-import prints from '../data/prints.json';
-import inventory from '../data/inventory.json';
-
-const filaments = inventory.filaments;
-const heroPrint = prints[0] ?? null;
 ---
-<Layout title="Fab3D — Impressions 3D sur commande">
-  <Nav />
-  <main>
+<Layout title="Fab3D — Bientôt disponible">
+  <main class="wip">
+    <div class="bg-blob"></div>
+    <div class="bg-blob2"></div>
 
-    <!-- ═══ HERO ════════════════════════════════════════════════════ -->
-    <section class="hero">
-      <div class="hero-blob"></div>
-      <div class="wrap hero-layout">
-
-        <div class="hero-text">
-          <div class="hero-tag slide-up">
-            <span class="tag-dot"></span>
-            Service disponible · Délai 2-5 jours
-          </div>
-          <h1 class="slide-up d1">
-            Tes idées,<br />
-            imprimées en <span class="text-gradient">3D</span>
-          </h1>
-          <p class="hero-sub slide-up d2">
-            Figurines, pièces techniques, objets déco, prototypes.<br />
-            Envoie ton idée — je l'imprime avec soin.
-          </p>
-          <div class="hero-btns slide-up d3">
-            <a href="#contact" class="btn-fill">Démarrer une commande</a>
-            <a href="#catalogue" class="btn-outline">Voir le catalogue</a>
-          </div>
-          <div class="hero-mini-stats slide-up d4">
-            <div class="ms-item">
-              <span class="ms-num">{prints.length}+</span>
-              <span class="ms-label">modèles</span>
-            </div>
-            <div class="ms-divider"></div>
-            <div class="ms-item">
-              <span class="ms-num">{filaments.length}</span>
-              <span class="ms-label">couleurs</span>
-            </div>
-            <div class="ms-divider"></div>
-            <div class="ms-item">
-              <span class="ms-num">100%</span>
-              <span class="ms-label">satisfaits</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-visual slide-right d2">
-          <div class="hv-ring hv-ring-lg"></div>
-          <div class="hv-ring hv-ring-sm"></div>
-          <div class="hv-dot hv-d1"></div>
-          <div class="hv-dot hv-d2"></div>
-          <div class="hv-dot hv-d3"></div>
-          {heroPrint && heroPrint.photos.length > 0 ? (
-            <div class="hv-card">
-              <img src={heroPrint.photos[0]} alt={heroPrint.name} />
-              <div class="hv-card-info">
-                <span class="hv-badge">{heroPrint.category}</span>
-                <p>{heroPrint.name}</p>
-                <span class="hv-price">À partir de {heroPrint.price_range.split('-')[0]}$</span>
-              </div>
-            </div>
-          ) : (
-            <div class="hv-card hv-card-empty">
-              <div class="hv-placeholder">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              </div>
-            </div>
-          )}
-        </div>
-
+    <div class="card slide-up">
+      <div class="icon-wrap">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
       </div>
-    </section>
 
-    <!-- ═══ STATS ════════════════════════════════════════════════════ -->
-    <section class="stats-section">
-      <div class="wrap stats-grid">
-        {[
-          { n: prints.length, s: '+', label: 'Modèles réalisés',     icon: '🎨' },
-          { n: filaments.length, s: '',  label: 'Couleurs disponibles', icon: '🎭' },
-          { n: 5,             s: ' jours', label: 'Délai maximum',    icon: '⚡' },
-          { n: 100,           s: '%',  label: 'Satisfaction client',  icon: '⭐' },
-        ].map((s, i) => (
-          <div class={`stat-card slide-up d${i+1}`}>
-            <div class="sc-icon">{s.icon}</div>
-            <div class="sc-num" data-count={s.n} data-suffix={s.s}>0{s.s}</div>
-            <p class="sc-label">{s.label}</p>
-          </div>
-        ))}
-      </div>
-    </section>
+      <div class="badge">En construction</div>
 
-    <!-- ═══ CATALOGUE ════════════════════════════════════════════════ -->
-    <section class="section" id="catalogue">
-      <div class="wrap">
-        <div class="sec-head slide-up">
-          <span class="sec-label">Réalisations</span>
-          <h2>Notre <span class="text-gradient">catalogue</span></h2>
-          <p class="sec-sub">Chaque pièce est imprimée avec soin et précision. Contacte-moi pour reproduire un modèle ou créer quelque chose d'unique.</p>
-        </div>
+      <h1>Quelque chose de beau<br />arrive bientôt</h1>
 
-        {prints.length === 0 ? (
-          <div class="empty-state slide-up">
-            <div class="es-icon">🖨️</div>
-            <h3>Bientôt disponible</h3>
-            <p>Les premières créations arrivent très vite !</p>
-          </div>
-        ) : (
-          <div class="catalogue-grid">
-            {prints.map((p, i) => (
-              <article class={`pc pop-in d${(i % 4) + 1}`}>
-                <div class="pc-photo">
-                  {p.photos.length > 0 ? (
-                    <img src={p.photos[0]} alt={p.name} loading="lazy" />
-                  ) : (
-                    <div class="pc-ph-empty">
-                      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.25"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    </div>
-                  )}
-                  <div class="pc-overlay">
-                    <a href="#contact" class="pc-overlay-btn">Commander →</a>
-                  </div>
-                  <span class="pc-cat">{p.category}</span>
-                </div>
-                <div class="pc-body">
-                  <h3 class="pc-name">{p.name}</h3>
-                  {p.description && <p class="pc-desc">{p.description}</p>}
-                  <div class="pc-foot">
-                    <div class="pc-tags">
-                      <span class="pc-tag">{p.material}</span>
-                    </div>
-                    <span class="pc-price">{p.price_range.split('-')[0]}$+</span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
+      <p>Notre site d'impressions 3D est en cours de préparation.<br />Reviens nous voir très bientôt !</p>
 
-    <!-- ═══ PROCESSUS ════════════════════════════════════════════════ -->
-    <section class="section section-alt" id="processus">
-      <div class="wrap">
-        <div class="sec-head slide-up">
-          <span class="sec-label">Étapes</span>
-          <h2>Comment <span class="text-gradient">ça marche</span></h2>
-        </div>
+      <div class="divider"></div>
 
-        <div class="steps-row">
-          {[
-            { n: '01', icon: '💬', title: 'Envoie ta demande',  desc: 'Décris ce que tu veux via le chat. Une photo de référence est la bienvenue.' },
-            { n: '02', icon: '💰', title: 'Reçois un devis',    desc: 'Je calcule le prix selon le poids, le temps d\'impression et la complexité.' },
-            { n: '03', icon: '🖨️', title: 'Impression lancée',  desc: 'Je démarre l\'impression. Suivi disponible. Délai habituel : 2 à 5 jours.' },
-            { n: '04', icon: '📦', title: 'Livraison',           desc: 'Remise en main propre ou envoi postal. Pièce emballée et protégée.' },
-          ].map((s, i) => (
-            <div class={`step slide-up d${i + 1}`}>
-              <div class="step-head">
-                <div class="step-circle">
-                  <span>{s.n}</span>
-                </div>
-                {i < 3 && <div class="step-connector"></div>}
-              </div>
-              <div class="step-icon">{s.icon}</div>
-              <h3>{s.title}</h3>
-              <p>{s.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ MATÉRIAUX / COULEURS ══════════════════════════════════════ -->
-    <section class="section" id="materiaux">
-      <div class="wrap">
-        <div class="sec-head slide-up">
-          <span class="sec-label">Inventaire</span>
-          <h2>Filaments <span class="text-gradient">disponibles</span></h2>
-          <p class="sec-sub">Couleurs en stock. D'autres teintes peuvent être commandées sur demande.</p>
-        </div>
-
-        <div class="colors-grid">
-          {filaments.map((f, i) => (
-            <div class={`color-item slide-up d${(i % 4) + 1}`}>
-              <div class="ci-swatch" style={`background: ${f.hex}`}>
-                <div class="ci-shine"></div>
-              </div>
-              <span class="ci-name">{f.name}</span>
-              <span class="ci-mat">{f.material}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ CTA ══════════════════════════════════════════════════════ -->
-    <section class="cta-section" id="contact">
-      <div class="cta-dots"></div>
-      <div class="wrap cta-inner slide-up">
-        <div class="cta-chip">Prêt à commencer ?</div>
-        <h2>Transforme ton idée<br />en objet réel</h2>
-        <p>Contacte-moi directement via le chat. Je réponds rapidement<br />et te propose un devis sans engagement.</p>
-        <div class="cta-actions">
-          <button class="cta-btn-primary" id="cta-chat-btn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Ouvrir le chat
-          </button>
-        </div>
-        <p class="cta-note">Disponible aussi par email ou Discord</p>
-      </div>
-    </section>
-
+      <p class="cta-text">Une question ? Envoie-nous un message via le chat.</p>
+    </div>
   </main>
-  <Footer />
 </Layout>
 
 <style>
-  main { padding-top: 68px; }
-  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 2rem; }
-
-  /* ── Typography helpers ────────────────────────── */
-  h1, h2, h3 { font-family: 'Outfit', sans-serif; }
-  .sec-label {
-    display: inline-block; font-size: 0.7rem; font-weight: 700;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--primary); background: var(--bg-section);
-    padding: 0.3rem 0.8rem; border-radius: 999px;
-    margin-bottom: 1rem;
-  }
-  .sec-head { text-align: center; margin-bottom: 3.5rem; }
-  .sec-head h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
-  .sec-sub { font-size: 0.95rem; color: var(--text-muted); max-width: 480px; margin: 0 auto; line-height: 1.75; }
-  .section { padding: 6rem 2rem; }
-  .section-alt { background: var(--bg-alt); }
-
-  /* ── Buttons ────────────────────────────────────── */
-  .btn-fill {
-    display: inline-flex; align-items: center;
-    background: var(--primary); color: #fff;
-    padding: 0.85rem 1.75rem; border-radius: 12px;
-    font-weight: 700; font-size: 0.9rem;
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  }
-  .btn-fill:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(79,70,229,0.35); }
-  .btn-outline {
-    display: inline-flex; align-items: center;
-    background: transparent; color: var(--text);
-    padding: 0.85rem 1.75rem; border-radius: 12px;
-    font-weight: 600; font-size: 0.9rem;
-    border: 1.5px solid var(--border);
-    transition: border-color 0.2s, color 0.2s, background 0.2s;
-  }
-  .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--bg-section); }
-
-  /* ── Hero ───────────────────────────────────────── */
-  .hero {
-    position: relative; min-height: calc(100vh - 68px);
-    display: flex; align-items: center;
-    padding: 4rem 2rem 5rem;
+  .wip {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
     overflow: hidden;
+    background: var(--bg);
   }
-  .hero-blob {
-    position: absolute; top: -20%; right: -10%; width: 55%; padding-top: 55%;
-    background: radial-gradient(circle, rgba(79,70,229,0.08) 0%, transparent 65%);
-    border-radius: 50%; pointer-events: none;
-  }
-  .hero-layout {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 4rem; align-items: center;
-  }
-  .hero-tag {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: var(--bg-section); border: 1px solid rgba(79,70,229,0.2);
-    border-radius: 999px; padding: 0.35rem 1rem;
-    font-size: 0.75rem; font-weight: 600; color: var(--primary);
-    margin-bottom: 1.75rem;
-  }
-  .tag-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--secondary); flex-shrink: 0; }
-  .hero-text h1 {
-    font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 800;
-    letter-spacing: -0.04em; line-height: 1.05;
-    margin-bottom: 1.25rem; color: var(--text);
-  }
-  .hero-sub { font-size: 1rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 2rem; }
-  .hero-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
-  .hero-mini-stats { display: flex; align-items: center; gap: 1.5rem; }
-  .ms-divider { width: 1px; height: 32px; background: var(--border); }
-  .ms-num { display: block; font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--text); }
-  .ms-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 500; }
 
-  /* Hero visual */
-  .hero-visual {
-    position: relative; display: flex; justify-content: center; align-items: center;
-    min-height: 420px;
-  }
-  .hv-ring {
-    position: absolute; border-radius: 50%;
-    border: 1.5px dashed rgba(79,70,229,0.2);
-    animation: spinRing 20s linear infinite;
+  .bg-blob {
+    position: absolute;
+    top: -15%;
+    right: -10%;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(79,70,229,0.09) 0%, transparent 65%);
+    border-radius: 50%;
     pointer-events: none;
   }
-  .hv-ring-lg { width: 360px; height: 360px; }
-  .hv-ring-sm { width: 240px; height: 240px; animation-direction: reverse; animation-duration: 14s; }
-  .hv-dot {
-    position: absolute; border-radius: 50%;
-    background: var(--primary); opacity: 0.5; pointer-events: none;
+
+  .bg-blob2 {
+    position: absolute;
+    bottom: -10%;
+    left: -8%;
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, rgba(16,185,129,0.07) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
   }
-  .hv-d1 { width: 10px; height: 10px; top: 15%; right: 18%; }
-  .hv-d2 { width: 6px; height: 6px; bottom: 20%; left: 14%; background: var(--secondary); opacity: 0.6; }
-  .hv-d3 { width: 14px; height: 14px; top: 60%; right: 10%; opacity: 0.2; }
-  .hv-card {
-    position: relative; z-index: 2;
-    width: 260px;
+
+  .card {
+    position: relative;
+    z-index: 1;
     background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 3.5rem 3rem;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 24px 72px rgba(15,23,42,0.09), 0 0 0 1px rgba(15,23,42,0.04);
+  }
+
+  .icon-wrap {
+    width: 72px;
+    height: 72px;
     border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 24px 60px rgba(15,23,42,0.14), 0 0 0 1px rgba(15,23,42,0.06);
-    animation: floatY 5s ease-in-out infinite;
-  }
-  .hv-card img { width: 100%; height: 220px; object-fit: cover; }
-  .hv-card-info { padding: 1rem 1.1rem; }
-  .hv-badge {
-    display: inline-block; background: var(--bg-section); color: var(--primary);
-    font-size: 0.65rem; font-weight: 700; border-radius: 999px;
-    padding: 0.2rem 0.6rem; margin-bottom: 0.4rem;
-  }
-  .hv-card-info p { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
-  .hv-price { font-size: 0.78rem; color: var(--primary); font-weight: 700; }
-  .hv-card-empty { height: 320px; display: flex; align-items: center; justify-content: center; }
-
-  /* ── Stats ──────────────────────────────────────── */
-  .stats-section {
-    background: var(--bg-alt);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 3.5rem 2rem;
-  }
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
-  .stat-card {
-    background: #fff; border: 1px solid var(--border);
-    border-radius: 16px; padding: 1.75rem 1.5rem;
-    display: flex; flex-direction: column; align-items: center; text-align: center;
-    transition: box-shadow 0.25s, transform 0.25s;
-  }
-  .stat-card:hover { box-shadow: 0 8px 32px rgba(79,70,229,0.1); transform: translateY(-3px); }
-  .sc-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
-  .sc-num {
-    font-family: 'Outfit', sans-serif; font-size: 2.25rem; font-weight: 800;
-    color: var(--primary); line-height: 1; margin-bottom: 0.4rem;
-  }
-  .sc-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
-
-  /* ── Catalogue ──────────────────────────────────── */
-  .catalogue-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-  .pc {
-    background: #fff; border: 1px solid var(--border);
-    border-radius: 18px; overflow: hidden;
-    transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
-  }
-  .pc:hover { box-shadow: 0 16px 48px rgba(79,70,229,0.12); transform: translateY(-5px); border-color: rgba(79,70,229,0.25); }
-  .pc-photo { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--bg-alt); }
-  .pc-photo img { width: 100%; height: 100%; transition: transform 0.45s ease; }
-  .pc:hover .pc-photo img { transform: scale(1.07); }
-  .pc-ph-empty { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-  .pc-overlay {
-    position: absolute; inset: 0;
-    background: rgba(79,70,229,0.82);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; transition: opacity 0.3s;
-  }
-  .pc:hover .pc-overlay { opacity: 1; }
-  .pc-overlay-btn {
-    background: #fff; color: var(--primary);
-    padding: 0.6rem 1.4rem; border-radius: 10px;
-    font-weight: 700; font-size: 0.85rem;
-    transform: translateY(8px); transition: transform 0.3s;
-  }
-  .pc:hover .pc-overlay-btn { transform: none; }
-  .pc-cat {
-    position: absolute; top: 0.75rem; left: 0.75rem;
-    background: rgba(255,255,255,0.95); color: var(--primary);
-    border-radius: 999px; padding: 0.2rem 0.7rem;
-    font-size: 0.68rem; font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
-  .pc-body { padding: 1.25rem; }
-  .pc-name { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.35rem; }
-  .pc-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 0.75rem; }
-  .pc-foot { display: flex; align-items: center; justify-content: space-between; }
-  .pc-tags { display: flex; gap: 0.35rem; }
-  .pc-tag {
-    font-size: 0.68rem; font-weight: 700;
-    background: var(--bg-section); color: var(--primary);
-    border-radius: 6px; padding: 0.2rem 0.55rem;
-  }
-  .pc-price {
-    font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800;
-    color: var(--text);
+    background: var(--bg-section);
+    border: 1.5px solid rgba(79,70,229,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: var(--primary);
+    animation: floatY 4s ease-in-out infinite;
   }
 
-  /* Empty state */
-  .empty-state { text-align: center; padding: 5rem 2rem; border: 2px dashed var(--border); border-radius: 20px; }
-  .es-icon { font-size: 3rem; margin-bottom: 1rem; }
-  .empty-state h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
-  .empty-state p { color: var(--text-muted); }
-
-  /* ── Steps ──────────────────────────────────────── */
-  .steps-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
-  .step { padding: 2rem 1.5rem; position: relative; }
-  .step-head { display: flex; align-items: center; margin-bottom: 1.25rem; }
-  .step-circle {
-    width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
-    background: var(--bg-section); border: 2px solid rgba(79,70,229,0.3);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .step-circle span { font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 800; color: var(--primary); }
-  .step-connector { flex: 1; height: 2px; background: repeating-linear-gradient(90deg, rgba(79,70,229,0.25) 0px, rgba(79,70,229,0.25) 6px, transparent 6px, transparent 12px); margin-left: 0.5rem; }
-  .step-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
-  .step h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
-  .step p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; }
-
-  /* ── Colors ─────────────────────────────────────── */
-  .colors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
-  .color-item { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
-  .ci-swatch {
-    width: 72px; height: 72px; border-radius: 50%;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-    position: relative; overflow: hidden;
-    transition: transform 0.25s, box-shadow 0.25s;
-    cursor: default;
-  }
-  .ci-swatch:hover { transform: scale(1.08); box-shadow: 0 10px 28px rgba(0,0,0,0.18); }
-  .ci-shine {
-    position: absolute; top: 8%; left: 20%; width: 28%; height: 28%;
-    background: rgba(255,255,255,0.35); border-radius: 50%;
-    filter: blur(2px);
-  }
-  .ci-name { font-size: 0.82rem; font-weight: 700; color: var(--text); }
-  .ci-mat  { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; }
-
-  /* ── CTA ────────────────────────────────────────── */
-  .cta-section {
-    background: var(--primary);
-    padding: 6rem 2rem; text-align: center;
-    position: relative; overflow: hidden;
-  }
-  .cta-dots {
-    position: absolute; inset: 0; pointer-events: none;
-    background-image: radial-gradient(rgba(255,255,255,0.12) 1.5px, transparent 1.5px);
-    background-size: 28px 28px;
-  }
-  .cta-inner { position: relative; max-width: 560px; margin: 0 auto; }
-  .cta-chip {
-    display: inline-block; background: rgba(255,255,255,0.18);
-    border: 1px solid rgba(255,255,255,0.25);
-    color: rgba(255,255,255,0.9); border-radius: 999px;
-    font-size: 0.75rem; font-weight: 700; padding: 0.35rem 1rem;
+  .badge {
+    display: inline-block;
+    background: var(--bg-section);
+    color: var(--primary);
+    border: 1px solid rgba(79,70,229,0.2);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.9rem;
     margin-bottom: 1.5rem;
   }
-  .cta-section h2 {
-    font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800;
-    color: #fff; letter-spacing: -0.03em; line-height: 1.15;
+
+  h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--text);
     margin-bottom: 1rem;
   }
-  .cta-section > .wrap > p {
-    font-size: 0.95rem; color: rgba(255,255,255,0.72);
-    line-height: 1.75; margin-bottom: 2rem;
-  }
-  .cta-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
-  .cta-btn-primary {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: #fff; color: var(--primary);
-    padding: 0.9rem 2rem; border-radius: 12px;
-    font-weight: 800; font-size: 0.95rem; border: none; cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .cta-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.2); }
-  .cta-note { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
 
-  /* ── Responsive ─────────────────────────────────── */
-  @media (max-width: 1024px) {
-    .hero-layout { grid-template-columns: 1fr; text-align: center; }
-    .hero-visual { display: none; }
-    .hero-btns, .hero-mini-stats { justify-content: center; }
-    .catalogue-grid { grid-template-columns: 1fr 1fr; }
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .steps-row { grid-template-columns: 1fr 1fr; }
-    .step-connector { display: none; }
-    .colors-grid { grid-template-columns: repeat(4, 1fr); }
+  p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin: 0;
   }
-  @media (max-width: 640px) {
-    .catalogue-grid { grid-template-columns: 1fr; }
-    .steps-row { grid-template-columns: 1fr; }
-    .colors-grid { grid-template-columns: repeat(3, 1fr); }
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-    .hero-btns { flex-direction: column; align-items: center; }
-    .hero-mini-stats { gap: 1rem; }
+
+  .divider {
+    width: 48px;
+    height: 2px;
+    background: var(--border);
+    border-radius: 999px;
+    margin: 1.75rem auto;
   }
-  @media (max-width: 420px) {
-    .colors-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .cta-text {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 540px) {
+    .card {
+      padding: 2.5rem 1.75rem;
+      border-radius: 20px;
+    }
   }
 </style>
-
-<script>
-  document.getElementById('cta-chat-btn')?.addEventListener('click', () => {
-    document.getElementById('cw-btn')?.click();
-  });
-</script>
